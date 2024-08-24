@@ -19,7 +19,7 @@ public class CardScript : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateCardVisual();
+        // UpdateCardVisual();
 
         if (onCardClicked == null)
             onCardClicked = new CardClickEvent();
@@ -37,8 +37,21 @@ public class CardScript : MonoBehaviour
     public void Flip()
     {
         // cardData.IsFaceUp = !cardData.IsFaceUp;
-         cardData.IsFaceUp = true;
+        cardData.IsFaceUp = true;
         UpdateCardVisual();
+    }
+
+    public void FlipWithAnimation(float flipDuration = 0.5f)
+    {
+        transform.DORotate(new Vector3(0, 90, 0), flipDuration / 2, RotateMode.LocalAxisAdd).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            Flip();
+            transform.DORotate(new Vector3(0, 90, 0), flipDuration / 2, RotateMode.LocalAxisAdd).SetEase(Ease.InOutQuad).OnComplete(() =>
+            {
+
+            });
+        });
+
     }
 
     private void UpdateCardVisual()
@@ -49,20 +62,13 @@ public class CardScript : MonoBehaviour
             return;
         }
         spriteRenderer.sprite = cardData.IsFaceUp ? cardData.FaceUpSprite : cardData.FaceDownSprite;
-        // if (cardData?.FaceUpSprite)
-        // {
-            // spriteRenderer.sprite = cardData.FaceUpSprite;
-        // }
-        // else
-        // {
-        //     Debug.Log("Card data error: Missing sprite references at " + cardData.name);
-        // }
     }
 
 
     public void OnMouseDown()
     {
-        if(!cardData.IsFaceUp){
+        if (!cardData.IsFaceUp)
+        {
             return;
         }
         Debug.Log("Card clicked: " + cardData.name);
@@ -81,13 +87,17 @@ public class CardScript : MonoBehaviour
     {
         if (!dependsOnCards.Contains(dependentCard))
             dependsOnCards.Add(dependentCard);
-    
-    //Print all dependencies name in single line
-    Debug.Log("Dependencies: for "+cardData.name +" is: "+ string.Join(", ", dependsOnCards.ConvertAll(c => c.cardData.name)));
+
+        //Print all dependencies name in single line
+        Debug.Log("Dependencies: for " + cardData.name + " is: " + string.Join(", ", dependsOnCards.ConvertAll(c => c.cardData.name)));
     }
 
     public bool CanFlip()
     {
+        if (cardData.IsFaceUp)
+        {
+            return false;
+        }
         foreach (var dep in dependsOnCards)
         {
             if (dep != null && !dep.IsCollected) // Assuming isFaceUp is true when the card is visible
@@ -96,36 +106,16 @@ public class CardScript : MonoBehaviour
         return true; // Can flip if all dependencies are not visible
     }
 
-   public bool  isDependentAreCollected()
-    {
-        //Check if all dependencies are collected
-        bool allCollected = true;
-        foreach (var dep in dependsOnCards)
-        {
-            if (!dep.IsCollected)
-                allCollected = false;
-        }
-
-        return allCollected;
-    
-
-        // foreach (var dep in dependsOnCards)
-        // {
-        //     if (dep != null && !dep.IsCollected) // Assuming isFaceUp is true when the card is visible
-        //         return false;
-        // }
-        // return true; // Can flip if all dependencies are not visible
-    }
 
     public void handleFlipIfEligible()
     {
-        if (isDependentAreCollected())
+        if (CanFlip())
         {
-            Flip();
+            FlipWithAnimation();
         }
     }
 
-     public void MoveToDestination(Transform destination, float duration = 1f)
+    public void MoveToDestination(Transform destination, float duration = 1f)
     {
         // Tween this card's position to the destination's position over the specified duration
         this.transform.DOMove(destination.position, duration).SetEase(Ease.InOutQuad);
