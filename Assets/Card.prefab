@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardData: {fileID: 0}
   spriteRenderer: {fileID: 3071063196967344711}
+  dependsOnCards: []
 --- !u!61 &5779827116404097742
 BoxCollider2D:
   m_ObjectHideFlags: 0
