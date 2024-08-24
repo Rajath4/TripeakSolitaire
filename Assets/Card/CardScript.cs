@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class CardClickEvent : UnityEvent<CardScript> { }
 
@@ -61,6 +62,9 @@ public class CardScript : MonoBehaviour
 
     public void OnMouseDown()
     {
+        if(!cardData.IsFaceUp){
+            return;
+        }
         Debug.Log("Card clicked: " + cardData.name);
         if (onCardClicked == null)
         {
@@ -119,5 +123,14 @@ public class CardScript : MonoBehaviour
         {
             Flip();
         }
+    }
+
+     public void MoveToDestination(Transform destination, float duration = 1f)
+    {
+        // Tween this card's position to the destination's position over the specified duration
+        this.transform.DOMove(destination.position, duration).SetEase(Ease.InOutQuad);
+
+        // Optionally, you can also smoothly rotate the card to match the destination's rotation
+        this.transform.DORotateQuaternion(destination.rotation, duration).SetEase(Ease.InOutQuad);
     }
 }

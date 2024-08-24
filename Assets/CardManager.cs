@@ -22,6 +22,7 @@ public class CardManager : MonoBehaviour
         // DealCards();
         SetupCards();
         ComputeDependencies();
+        CheckForPossibleCardFlips();
     }
 
     void SetupCards()
@@ -78,6 +79,8 @@ public class CardManager : MonoBehaviour
         card.Flip();
         card.IsCollected = true;
         Debug.Log($"Card clicked: {card.cardData.name}");
+
+        card.MoveToDestination(wastePilePosition);
         CheckForPossibleCardFlips();
     }
 
