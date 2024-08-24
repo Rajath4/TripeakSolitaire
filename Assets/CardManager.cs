@@ -24,9 +24,19 @@ public class CardManager : MonoBehaviour
                 GameObject cardObject = Instantiate(cardPrefab, position.position, Quaternion.identity, position);
                 CardScript cardScript = cardObject.GetComponent<CardScript>();
                 cardScript.InitializeCard(cardData); // Initialize the card with CardData
+                RegisterCardClickHandler(cardScript); // Register the card for click events
             }
         }
     }
 
-    // Add any additional methods needed for gameplay, like reshuffling, resetting the deck, etc.
+    public void RegisterCardClickHandler(CardScript card)
+    {
+        card.onCardClicked.AddListener(HandleCardClick);
+    }
+
+    private void HandleCardClick(CardScript card)
+    {
+        Debug.Log($"Card clicked: {card.cardData.name}");
+    }
+
 }
