@@ -18,7 +18,7 @@ public class CardScript : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        // spriteRenderer = GetComponent<SpriteRenderer>();
         // UpdateCardVisual();
 
         if (onCardClicked == null)
@@ -61,7 +61,7 @@ public class CardScript : MonoBehaviour
             Debug.Log("Card data is null");
             return;
         }
-        spriteRenderer.sprite = cardData.IsFaceUp ? cardData.FaceUpSprite : cardData.FaceDownSprite;
+        // spriteRenderer.sprite = cardData.IsFaceUp ? cardData.FaceUpSprite : cardData.FaceDownSprite;
     }
 
 

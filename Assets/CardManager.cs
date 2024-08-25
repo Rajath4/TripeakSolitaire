@@ -46,12 +46,13 @@ public class CardManager : MonoBehaviour
             {
                 Vector3 positionWithZOffset = new Vector3(pos.position.x, pos.position.y, pos.position.z + currentRow * zOffset);
 
-                GameObject cardObj = Instantiate(cardPrefab, positionWithZOffset, Quaternion.identity);
+                GameObject cardObj = Instantiate(cardPrefab, deckPosition);
                 CardScript cardScript = cardObj.GetComponent<CardScript>();
                 cardScript.InitializeCard(allCardData[currentIndex]);
                 RegisterCardClickHandler(cardScript); // Register the card for click events
                 currentRowCardScripts.Add(cardScript);
                 currentIndex++;
+                Debug.Log($"Card {cardScript.cardData.name} created at {positionWithZOffset}");
             }
             cardsToPick.Add(currentRowCardScripts);
             currentRow++;
