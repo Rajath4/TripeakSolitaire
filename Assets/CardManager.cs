@@ -114,7 +114,7 @@ public class CardManager : MonoBehaviour
                 int nextRowIndex = rowIndex + 1;
                 foreach (int dependentIndicesColumn in dependentIndices)
                 {
-                    card.dependsOnCards.Add(cardsToPick[nextRowIndex][dependentIndicesColumn]);
+                    card.AddDependency(cardsToPick[nextRowIndex][dependentIndicesColumn]);
                 }
             }
         }
