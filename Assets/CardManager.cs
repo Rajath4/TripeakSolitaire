@@ -26,12 +26,12 @@ public class CardManager : MonoBehaviour
         ComputeDependencies();
         CheckForPossibleCardFlips();
 
-       
+
 
         SetupDeckCards();
         MoveToDeckCardToWastePile();
     }
-    
+
 
     void SetupCards()
     {
@@ -71,13 +71,14 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void MoveToDeckCardToWastePile(){
+    private void MoveToDeckCardToWastePile()
+    {
         CardScript cardScript = deck.GetCardScriptAtTop();
         wastePile.Add(cardScript);
         cardScript.FlipWithAnimation();
         Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
-       Transform wastePileTransform = wastePilePosition;
-       wastePileTransform.position = wastePilePositionZOffset;
+        Transform wastePileTransform = wastePilePosition;
+        wastePileTransform.position = wastePilePositionZOffset;
         cardScript.MoveToDestination(wastePileTransform);
     }
 
@@ -117,7 +118,7 @@ public class CardManager : MonoBehaviour
     {
         if (deck.HasCards())
         {
-           MoveToDeckCardToWastePile();
+            MoveToDeckCardToWastePile();
         }
         else
         {
@@ -130,7 +131,7 @@ public class CardManager : MonoBehaviour
     {
         card.onCardClicked.AddListener(HandleCardClick);
     }
-    
+
 
     private void HandleCardClick(CardScript card)
     {
@@ -182,16 +183,40 @@ public class CardManager : MonoBehaviour
 
     public bool CanCardBeCollected(CardScript card)
     {
-        if (wastePile.Count == 0) return true; // If the waste pile is empty, any card can be played
+        if (wastePile.Count == 0)
+        {
+            Debug.LogError("Waste pile is empty");
+        }
         CardScript topCard = wastePile[wastePile.Count - 1];
-        // Example rule: match by rank or suit
-        return card.cardData.Rank == topCard.cardData.Rank || card.cardData.Suit == topCard.cardData.Suit;
-    }
+        Rank cardRank = card.cardData.Rank;
+        Rank topCardRank = topCard.cardData.Rank;
 
+        if (cardRank == Rank.Ace)
+        {
+            // Ace can be placed on Two or King
+            return topCardRank == Rank.Two || topCardRank == Rank.King;
+        }
+        else if (cardRank == Rank.Two)
+        {
+            // Two can be placed on Ace or Three
+            return topCardRank == Rank.Ace || topCardRank == Rank.Three;
+        }
+        // else if (cardRank == Rank.King) //TODO: Check it
+        // {
+        //     // King can be placed on Queen or Ace
+        //     return topCardRank == Rank.Queen || topCardRank == Rank.Ace;
+        // }
+        else
+        {
+            // Normal behavior: check next and previous rank in the enum
+            return cardRank == topCardRank + 1 || cardRank == topCardRank - 1;
+        }
+
+    }
     public void PlayCardToWastePile(CardScript card)
     {
-       CardScript topCard = wastePile[wastePile.Count - 1];
-       wastePile.RemoveAt(wastePile.Count - 1); // Remove the top card from the waste pile
+        CardScript topCard = wastePile[wastePile.Count - 1];
+        wastePile.RemoveAt(wastePile.Count - 1); // Remove the top card from the waste pile
         Destroy(topCard.gameObject);
         wastePile.Add(card); // Add the card to the waste pile
     }
