@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using static CardGrid;
@@ -41,7 +42,6 @@ public class CardManager : MonoBehaviour
     void SetupCards()
     {
         int currentIndex = 0;
-        float zOffset = -0.1f;
         int currentRow = 0;
 
         foreach (RowData row in gridCardContainer.rows)
@@ -74,7 +74,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void MoveToDeckCardToWastePile()
+    private async void MoveToDeckCardToWastePile()
     {
         CardScript currentWastePileTopCard = wastePileTopCard;
 
@@ -83,7 +83,7 @@ public class CardManager : MonoBehaviour
         // Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
         // Transform wastePileTransform = wastePilePosition;
         // wastePileTransform.position = wastePilePositionZOffset;
-        wastePileTopCard.MoveToDestination(wastePilePosition);
+        await wastePileTopCard.MoveToDestination(wastePilePosition);
         wastePileTopCard.transform.SetParent(wastePilePosition);
         wastePileTopCard.onCardClicked.RemoveListener(HandleDeckCardClick);
 
@@ -145,7 +145,7 @@ public class CardManager : MonoBehaviour
     }
 
 
-    private void HandleCardClick(CardScript card)
+    private async void HandleCardClick(CardScript card)
     {
         if (CanCardBeCollected(card))
         {
@@ -155,7 +155,7 @@ public class CardManager : MonoBehaviour
 
             // card.MoveToDestination(wastePilePosition);
             CheckForPossibleCardFlips();
-            PlayCardToWastePile(card);
+            await PlayCardToWastePileAsync(card);
         }
         else
         {
@@ -222,7 +222,7 @@ public class CardManager : MonoBehaviour
         }
 
     }
-    public void PlayCardToWastePile(CardScript card)
+    public async Task PlayCardToWastePileAsync(CardScript card)
     {
         CardScript cardRemovedFromWastePile = wastePileTopCard;
         wastePileTopCard = card;
@@ -230,7 +230,7 @@ public class CardManager : MonoBehaviour
         // Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
         // Transform wastePileTransform = wastePilePosition;
         // wastePileTransform.position = wastePilePosition;
-        card.MoveToDestination(wastePilePosition);
+        await card.MoveToDestination(wastePilePosition);
         card.transform.SetParent(wastePilePosition);
 
         Destroy(cardRemovedFromWastePile.gameObject);

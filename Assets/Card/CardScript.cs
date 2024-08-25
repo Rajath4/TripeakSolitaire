@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Threading.Tasks;
 
 public class CardClickEvent : UnityEvent<CardScript> { }
 
@@ -135,12 +136,17 @@ public class CardScript : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    public void MoveToDestination(Transform destination, float duration = 1f)
+    public Task MoveToDestination(Transform destination, float duration = 1f)
     {
-        // Tween this card's position to the destination's position over the specified duration
-        this.transform.DOMove(destination.position, duration).SetEase(Ease.InOutQuad);
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-        // Optionally, you can also smoothly rotate the card to match the destination's rotation
-        // this.transform.DORotateQuaternion(destination.rotation, duration).SetEase(Ease.InOutQuad);
+        // Start the DOTween animation and use OnComplete to signal the task's completion
+        this.transform.DOMove(destination.position, duration).SetEase(Ease.InOutQuad).OnComplete(() =>
+        {
+            tcs.SetResult(true);
+        });
+
+        // Await the TaskCompletionSource's task
+        return tcs.Task;
     }
 }
