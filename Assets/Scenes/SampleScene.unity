@@ -3512,9 +3512,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 336677c43ec8e41c5ac43ed98088a1dd, type: 2}
   - {fileID: 11400000, guid: 75e7a3405535e4adeb69be4245f9cc46, type: 2}
   - {fileID: 11400000, guid: b744520a69c064a67ab6b4782209e7e9, type: 2}
-  deckPosition: {fileID: 657587591256649679}
   gridCardContainer: {fileID: 7023712578391896718}
   wastePile: {fileID: 5344608152857388098}
+  deck: {fileID: 7971403792949149619}
 --- !u!1 &1474171866
 GameObject:
   m_ObjectHideFlags: 0
@@ -5399,9 +5399,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 336677c43ec8e41c5ac43ed98088a1dd, type: 2}
   - {fileID: 11400000, guid: 75e7a3405535e4adeb69be4245f9cc46, type: 2}
   - {fileID: 11400000, guid: b744520a69c064a67ab6b4782209e7e9, type: 2}
-  deckPosition: {fileID: 571419402}
   gridCardContainer: {fileID: 1393728714}
   wastePile: {fileID: 0}
+  deck: {fileID: 0}
 --- !u!114 &122047742507731129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5480,6 +5480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 657587591256649679}
   - component: {fileID: 7971403792949149618}
+  - component: {fileID: 7971403792949149619}
   m_Layer: 5
   m_Name: DeckHolder
   m_TagString: Untagged
@@ -7466,6 +7467,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &7971403792949149619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628198190305268436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a95585fe9701548ba925c34488428b2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 657587591256649679}
 --- !u!1 &8089584602192123763
 GameObject:
   m_ObjectHideFlags: 0

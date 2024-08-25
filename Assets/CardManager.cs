@@ -4,36 +4,37 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using static CardGrid;
 
-public class CardManager : MonoBehaviour
+public class CardManager : MonoBehaviour, IDeckCardClickHandler
 {
     public GameObject cardPrefab;     // Card prefab which includes the CardScript
     public CardData[] allCardData;    // Array of all CardData ScriptableObjects, assigned via the inspector
 
     private List<List<CardScript>> cardsToPick = new List<List<CardScript>>();
 
-    public Transform deckPosition;
     public CardGrid gridCardContainer;
-    private Deck deck;
 
     private CardDataHandler cardDataHandler;
 
-
     public WastePile wastePile;
+    public Deck deck;
 
+    private ICardFactory cardFactory;
 
     void Start()
     {
         cardDataHandler = new CardDataHandler(allCardData);
         cardDataHandler.Shuffle();
 
-        deck = new Deck();
+        cardFactory = new CardFactory();
+
+        deck.Initialize(cardFactory, this);
 
         SetupCards();
         ComputeDependencies();
 
         CheckForPossibleCardFlips();
+        deck.SetupDeckCards(cardDataHandler.GetAllCards(), cardPrefab);
 
-        SetupDeckCards();
         MoveToDeckCardToWastePile();
     }
 
@@ -60,33 +61,12 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void SetupDeckCards()
-    {
-        int currentIndex = 0;
-        foreach (CardData cardData in cardDataHandler.GetAllCards())
-        {
-            CardScript cardScript = GetCardScript(cardData, deckPosition);
-            RegisterDeckCardClickHandler(cardScript); // Register the card for click events
-            deck.AddCardScript(cardScript);
-            cardScript.IsDeckCard = true;
-            currentIndex++;
-        }
-    }
 
     private async Task MoveToDeckCardToWastePile()
     {
-        CardScript card = deck.GetCardScriptAtTop();
+        CardScript card = deck.GetCardAtTop();
         card.FlipWithAnimation();
         await wastePile.AddCardToWastePile(card);
-    }
-
-    private CardScript GetCardScript(CardData cardData, Transform parent)
-    {
-
-        GameObject cardObj = Instantiate(cardPrefab, parent);
-        CardScript cardScript = cardObj.GetComponent<CardScript>();
-        cardScript.InitializeCard(cardData);
-        return cardScript;
     }
 
     void ComputeDependencies()
@@ -107,12 +87,8 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    public void RegisterDeckCardClickHandler(CardScript card)
-    {
-        card.onCardClicked.AddListener(HandleDeckCardClick);
-    }
 
-    private void HandleDeckCardClick(CardScript card)
+    public void HandleDeckCardClick(CardScript card)
     {
         if (deck.HasCards())
         {

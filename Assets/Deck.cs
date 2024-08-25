@@ -1,14 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deck
+public class Deck : MonoBehaviour
 {
+    public Transform parent;
 
-    private List<CardScript> deckCards = new List<CardScript>();
+    private IDeckCardClickHandler clickHandler;
+    private ICardFactory cardFactory;
 
-    public Deck()
+    private readonly List<CardScript> deckCards = new List<CardScript>();
+
+    public void Initialize(ICardFactory cardFactory, IDeckCardClickHandler clickHandler)
     {
+        this.cardFactory = cardFactory;
+        this.clickHandler = clickHandler;
+    }
 
+    public void SetupDeckCards(CardData[] cardDatas, GameObject cardPrefab)
+    {
+        foreach (CardData cardData in cardDatas)
+        {
+            CardScript cardScript = cardFactory.CreateDeckCard(cardData, cardPrefab, parent);
+            cardScript.onCardClicked.AddListener(clickHandler.HandleDeckCardClick);
+            AddCard(cardScript);
+        }
     }
 
     public bool HasCards()
@@ -16,14 +31,12 @@ public class Deck
         return deckCards.Count > 0;
     }
 
-    public void AddCardScript(CardScript cardScript)
+    private void AddCard(CardScript cardScript)
     {
         deckCards.Add(cardScript);
     }
 
-
-
-    public CardScript GetCardScriptAtTop()
+    public CardScript GetCardAtTop()
     {
         if (deckCards.Count > 0)
         {
