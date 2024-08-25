@@ -8,7 +8,7 @@ public interface ILayoutIndex
     int ColumnIndex { get; set; }
 }
 
-public class GridCardContainer : MonoBehaviour
+public class CardGrid : MonoBehaviour
 {
     [System.Serializable]
     public struct RowData

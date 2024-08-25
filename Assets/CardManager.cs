@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
-using static GridCardContainer;
+using static CardGrid;
 
 public class CardManager : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class CardManager : MonoBehaviour
     public Transform deckPosition;
     public Transform wastePilePosition;
 
-    public GridCardContainer gridCardContainer;
+    public CardGrid gridCardContainer;
     private Deck deck;
     public List<CardScript> wastePile = new List<CardScript>();
 
@@ -39,14 +39,14 @@ public class CardManager : MonoBehaviour
         float zOffset = -0.1f;
         int currentRow = 0;
 
-        foreach (RowData row in gridCardContainer.rows)
+        foreach ( RowData row in gridCardContainer.rows)
         {
             List<CardScript> currentRowCardScripts = new List<CardScript>();
             foreach (Transform pos in row.positions)
             {
                 Vector3 positionWithZOffset = new Vector3(pos.position.x, pos.position.y, pos.position.z + currentRow * zOffset);
 
-                GameObject cardObj = Instantiate(cardPrefab, deckPosition);
+                GameObject cardObj = Instantiate(cardPrefab, pos);
                 CardScript cardScript = cardObj.GetComponent<CardScript>();
                 cardScript.InitializeCard(allCardData[currentIndex]);
                 RegisterCardClickHandler(cardScript); // Register the card for click events

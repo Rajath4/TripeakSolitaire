@@ -607,7 +607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &371877489
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3590,7 +3590,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b744520a69c064a67ab6b4782209e7e9, type: 2}
   deckPosition: {fileID: 371877489}
   wastePilePosition: {fileID: 1417917251}
-  gridCardContainer: {fileID: 492172181}
+  gridCardContainer: {fileID: 7023712578391896718}
   wastePile: []
 --- !u!1 &1474171866
 GameObject:
@@ -7274,6 +7274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5282400290831360923}
+  - component: {fileID: 7023712578391896718}
   m_Layer: 5
   m_Name: GameHolder
   m_TagString: Untagged
@@ -7281,6 +7282,51 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7023712578391896718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7023712578391896717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0f83cfe34d9e4374ab40195b0324a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rows:
+  - positions:
+    - {fileID: 8469532578341286086}
+    - {fileID: 8715350491354922946}
+    - {fileID: 1716418227519915512}
+  - positions:
+    - {fileID: 5617317365275677215}
+    - {fileID: 7210443326676818548}
+    - {fileID: 3330422103996976929}
+    - {fileID: 8173695208166170356}
+    - {fileID: 1648979961682486663}
+    - {fileID: 5291016986247001822}
+  - positions:
+    - {fileID: 2765087530674389247}
+    - {fileID: 7477572485212000562}
+    - {fileID: 1122948195344497197}
+    - {fileID: 1141625535318173723}
+    - {fileID: 638582991645515371}
+    - {fileID: 231882873182973366}
+    - {fileID: 3475518143942745956}
+    - {fileID: 7863998613529828078}
+    - {fileID: 3681787862392818345}
+  - positions:
+    - {fileID: 1536003291826981887}
+    - {fileID: 3274446282901329002}
+    - {fileID: 226992806015648456}
+    - {fileID: 7094070395031855543}
+    - {fileID: 6426803864850973147}
+    - {fileID: 722838608331356322}
+    - {fileID: 8387983992194516283}
+    - {fileID: 5318549649673462886}
+    - {fileID: 1407484110294056215}
+    - {fileID: 7011222364299543215}
 --- !u!224 &7094070395031855543
 RectTransform:
   m_ObjectHideFlags: 0
