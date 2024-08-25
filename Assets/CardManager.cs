@@ -12,14 +12,13 @@ public class CardManager : MonoBehaviour
     private List<List<CardScript>> cardsToPick = new List<List<CardScript>>();
 
     public Transform deckPosition;
-    public Transform wastePilePosition;
-
     public CardGrid gridCardContainer;
     private Deck deck;
 
     private CardDataHandler cardDataHandler;
 
-    private CardScript wastePileTopCard;
+
+    public WastePile wastePile;
 
 
     void Start()
@@ -74,23 +73,11 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private async void MoveToDeckCardToWastePile()
+    private async Task MoveToDeckCardToWastePile()
     {
-        CardScript currentWastePileTopCard = wastePileTopCard;
-
-        wastePileTopCard = deck.GetCardScriptAtTop();
-        wastePileTopCard.FlipWithAnimation();
-        // Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
-        // Transform wastePileTransform = wastePilePosition;
-        // wastePileTransform.position = wastePilePositionZOffset;
-        await wastePileTopCard.MoveToDestination(wastePilePosition);
-        wastePileTopCard.transform.SetParent(wastePilePosition);
-        wastePileTopCard.onCardClicked.RemoveListener(HandleDeckCardClick);
-
-        if (currentWastePileTopCard != null)
-        {
-            Destroy(currentWastePileTopCard.gameObject);
-        }
+        CardScript card = deck.GetCardScriptAtTop();
+        card.FlipWithAnimation();
+        await wastePile.AddCardToWastePile(card);
     }
 
     private CardScript GetCardScript(CardData cardData, Transform parent)
@@ -149,13 +136,10 @@ public class CardManager : MonoBehaviour
     {
         if (CanCardBeCollected(card))
         {
-            card.Flip();
             card.IsCollected = true;
             Debug.Log($"Card clicked: {card.cardData.name}");
-
-            // card.MoveToDestination(wastePilePosition);
+            await wastePile.AddCardToWastePile(card);
             CheckForPossibleCardFlips();
-            await PlayCardToWastePileAsync(card);
         }
         else
         {
@@ -196,7 +180,7 @@ public class CardManager : MonoBehaviour
     public bool CanCardBeCollected(CardScript card)
     {
 
-        CardScript topCard = wastePileTopCard;
+        CardScript topCard = wastePile.GetTopCard();
         Rank cardRank = card.cardData.Rank;
         Rank topCardRank = topCard.cardData.Rank;
 
@@ -222,17 +206,5 @@ public class CardManager : MonoBehaviour
         }
 
     }
-    public async Task PlayCardToWastePileAsync(CardScript card)
-    {
-        CardScript cardRemovedFromWastePile = wastePileTopCard;
-        wastePileTopCard = card;
 
-        // Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
-        // Transform wastePileTransform = wastePilePosition;
-        // wastePileTransform.position = wastePilePosition;
-        await card.MoveToDestination(wastePilePosition);
-        card.transform.SetParent(wastePilePosition);
-
-        Destroy(cardRemovedFromWastePile.gameObject);
-    }
 }

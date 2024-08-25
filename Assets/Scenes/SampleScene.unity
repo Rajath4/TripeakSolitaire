@@ -3513,9 +3513,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 75e7a3405535e4adeb69be4245f9cc46, type: 2}
   - {fileID: 11400000, guid: b744520a69c064a67ab6b4782209e7e9, type: 2}
   deckPosition: {fileID: 657587591256649679}
-  wastePilePosition: {fileID: 3478943143753575173}
   gridCardContainer: {fileID: 7023712578391896718}
-  wastePile: []
+  wastePile: {fileID: 5344608152857388098}
 --- !u!1 &1474171866
 GameObject:
   m_ObjectHideFlags: 0
@@ -5401,9 +5400,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 75e7a3405535e4adeb69be4245f9cc46, type: 2}
   - {fileID: 11400000, guid: b744520a69c064a67ab6b4782209e7e9, type: 2}
   deckPosition: {fileID: 571419402}
-  wastePilePosition: {fileID: 654061561}
   gridCardContainer: {fileID: 1393728714}
-  wastePile: []
+  wastePile: {fileID: 0}
 --- !u!114 &122047742507731129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6703,6 +6701,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3478943143753575173}
+  - component: {fileID: 5344608152857388098}
   m_Layer: 5
   m_Name: CurrentCard
   m_TagString: Untagged
@@ -6710,6 +6709,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5344608152857388098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5344608152857388097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416b8d6ca513e47adbcbbf411b356cbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WastePilePosition: {fileID: 3478943143753575173}
 --- !u!114 &5597601569848276773
 MonoBehaviour:
   m_ObjectHideFlags: 0

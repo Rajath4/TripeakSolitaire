@@ -90,7 +90,7 @@ public class CardScript : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    public bool CanFlip()
+    private bool CanFlip()
     {
         return !cardData.IsFaceUp && dependsOnCards.TrueForAll(dep => dep == null || dep.IsCollected);
     }
