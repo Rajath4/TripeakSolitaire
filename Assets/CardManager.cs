@@ -16,6 +16,8 @@ public class CardManager : MonoBehaviour, IDeckCardClickHandler,IGridCardClickHa
 
     private ICardFactory cardFactory;
 
+    private CardValidator cardValidator;
+
     void Start()
     {
         cardDataHandler = new CardDataHandler(allCardData);
@@ -33,6 +35,8 @@ public class CardManager : MonoBehaviour, IDeckCardClickHandler,IGridCardClickHa
         deck.SetupDeckCards(cardDataHandler.GetAllCards(), cardPrefab);
 
         MoveToDeckCardToWastePile();
+
+        cardValidator = new CardValidator();
     }
 
     private async Task MoveToDeckCardToWastePile()
@@ -57,7 +61,7 @@ public class CardManager : MonoBehaviour, IDeckCardClickHandler,IGridCardClickHa
 
     public async void HandleGridCardClick(CardScript card)
     {
-        if (CanCardBeCollected(card))
+        if (cardValidator.IsValidCardCollection(wastePile.GetTopCard(), card))
         {
             card.IsCollected = true;
             Debug.Log($"Card clicked: {card.cardData.name}");
@@ -69,35 +73,4 @@ public class CardManager : MonoBehaviour, IDeckCardClickHandler,IGridCardClickHa
             Debug.Log("Card cannot be collected");
         }
     }
-
-    public bool CanCardBeCollected(CardScript card)
-    {
-
-        CardScript topCard = wastePile.GetTopCard();
-        Rank cardRank = card.cardData.Rank;
-        Rank topCardRank = topCard.cardData.Rank;
-
-        if (cardRank == Rank.Ace)
-        {
-            // Ace can be placed on Two or King
-            return topCardRank == Rank.Two || topCardRank == Rank.King;
-        }
-        else if (cardRank == Rank.Two)
-        {
-            // Two can be placed on Ace or Three
-            return topCardRank == Rank.Ace || topCardRank == Rank.Three;
-        }
-        // else if (cardRank == Rank.King) //TODO: Check it
-        // {
-        //     // King can be placed on Queen or Ace
-        //     return topCardRank == Rank.Queen || topCardRank == Rank.Ace;
-        // }
-        else
-        {
-            // Normal behavior: check next and previous rank in the enum
-            return cardRank == topCardRank + 1 || cardRank == topCardRank - 1;
-        }
-
-    }
-
 }
