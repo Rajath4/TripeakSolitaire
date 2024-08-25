@@ -1,17 +1,13 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using static CardGrid;
 
-public class CardManager : MonoBehaviour, IDeckCardClickHandler
+public class CardManager : MonoBehaviour, IDeckCardClickHandler,IGridCardClickHandler
 {
     public GameObject cardPrefab;     // Card prefab which includes the CardScript
     public CardData[] allCardData;    // Array of all CardData ScriptableObjects, assigned via the inspector
 
-    private List<List<CardScript>> cardsToPick = new List<List<CardScript>>();
 
-    public CardGrid gridCardContainer;
+    public CardGrid cardGrid;
 
     private CardDataHandler cardDataHandler;
 
@@ -27,40 +23,17 @@ public class CardManager : MonoBehaviour, IDeckCardClickHandler
 
         cardFactory = new CardFactory();
 
+        cardGrid.Initialize(cardDataHandler, cardFactory, this);
         deck.Initialize(cardFactory, this);
 
-        SetupCards();
-        ComputeDependencies();
+        cardGrid.SetupCards(cardPrefab);
+        cardGrid.ComputeDependencies();
 
-        CheckForPossibleCardFlips();
+        cardGrid.CheckForPossibleCardFlips();
         deck.SetupDeckCards(cardDataHandler.GetAllCards(), cardPrefab);
 
         MoveToDeckCardToWastePile();
     }
-
-
-    void SetupCards()
-    {
-        int currentIndex = 0;
-        int currentRow = 0;
-
-        foreach (RowData row in gridCardContainer.rows)
-        {
-            List<CardScript> currentRowCardScripts = new List<CardScript>();
-            foreach (Transform pos in row.positions)
-            {
-                GameObject cardObj = Instantiate(cardPrefab, pos);
-                CardScript cardScript = cardObj.GetComponent<CardScript>();
-                cardScript.InitializeCard(cardDataHandler.DrawCard());
-                RegisterCardClickHandler(cardScript); // Register the card for click events
-                currentRowCardScripts.Add(cardScript);
-                currentIndex++;
-            }
-            cardsToPick.Add(currentRowCardScripts);
-            currentRow++;
-        }
-    }
-
 
     private async Task MoveToDeckCardToWastePile()
     {
@@ -68,25 +41,6 @@ public class CardManager : MonoBehaviour, IDeckCardClickHandler
         card.FlipWithAnimation();
         await wastePile.AddCardToWastePile(card);
     }
-
-    void ComputeDependencies()
-    {
-        for (int rowIndex = 0; rowIndex < cardsToPick.Count - 1; rowIndex++)
-        {
-            List<CardScript> row = cardsToPick[rowIndex];
-            for (int columnIndex = 0; columnIndex < row.Count; columnIndex++)
-            {
-                CardScript card = row[columnIndex];
-                int[] dependentIndices = gridCardContainer.GetDependentsIndex(rowIndex, columnIndex);
-                int nextRowIndex = rowIndex + 1;
-                foreach (int dependentIndicesColumn in dependentIndices)
-                {
-                    card.AddDependency(cardsToPick[nextRowIndex][dependentIndicesColumn]);
-                }
-            }
-        }
-    }
-
 
     public void HandleDeckCardClick(CardScript card)
     {
@@ -101,55 +55,18 @@ public class CardManager : MonoBehaviour, IDeckCardClickHandler
         }
     }
 
-
-    public void RegisterCardClickHandler(CardScript card)
-    {
-        card.onCardClicked.AddListener(HandleCardClick);
-    }
-
-
-    private async void HandleCardClick(CardScript card)
+    public async void HandleGridCardClick(CardScript card)
     {
         if (CanCardBeCollected(card))
         {
             card.IsCollected = true;
             Debug.Log($"Card clicked: {card.cardData.name}");
             await wastePile.AddCardToWastePile(card);
-            CheckForPossibleCardFlips();
+            cardGrid.CheckForPossibleCardFlips();
         }
         else
         {
             Debug.Log("Card cannot be collected");
-        }
-
-
-    }
-
-
-    public List<CardScript> GetFlippedCards()
-    {
-        List<CardScript> flippedCards = new List<CardScript>();
-        foreach (var row in cardsToPick)
-        {
-            foreach (var card in row)
-            {
-                if (card.cardData.IsFaceUp)
-                {
-                    flippedCards.Add(card);
-                }
-            }
-        }
-        return flippedCards;
-    }
-
-    private void CheckForPossibleCardFlips()
-    {
-        foreach (var row in cardsToPick)
-        {
-            foreach (var card in row)
-            {
-                card.handleFlipIfEligible();
-            }
         }
     }
 

@@ -10,3 +10,17 @@ public interface IDeckCardClickHandler
 {
     void HandleDeckCardClick(CardScript card);
 }
+
+public interface IGridCardClickHandler
+{
+    void HandleGridCardClick(CardScript card);
+}
+
+
+public interface ICardDataHandler
+{
+    CardData DrawCard();
+    void Shuffle();
+    CardData[] GetAllCards();
+}
+

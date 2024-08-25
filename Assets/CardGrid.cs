@@ -18,8 +18,87 @@ public class CardGrid : MonoBehaviour
 
     public RowData[] rows; // Data for each row, set this up in the inspector
 
+    private List<List<CardScript>> cardsToPick = new List<List<CardScript>>();
 
-    public int[] GetDependentsIndex(int currentRowIndex, int currentColumnIndex)
+    private IGridCardClickHandler clickHandler;
+    private ICardFactory cardFactory;
+    private ICardDataHandler cardDataHandler;
+
+
+    public void Initialize(ICardDataHandler cardDataHandler, ICardFactory cardFactory, IGridCardClickHandler clickHandler)
+    {
+        this.cardDataHandler = cardDataHandler;
+        this.cardFactory = cardFactory;
+        this.clickHandler = clickHandler;
+    }
+
+    public void SetupCards(GameObject cardPrefab)
+    {
+        int currentIndex = 0;
+        int currentRow = 0;
+
+        foreach (RowData row in rows)
+        {
+            List<CardScript> currentRowCardScripts = new List<CardScript>();
+            foreach (Transform pos in row.positions)
+            {
+                CardScript cardScript = cardFactory.CreateDeckCard(cardDataHandler.DrawCard(), cardPrefab, pos);
+                cardScript.onCardClicked.AddListener(clickHandler.HandleGridCardClick);
+                currentRowCardScripts.Add(cardScript);
+                currentIndex++;
+            }
+            cardsToPick.Add(currentRowCardScripts);
+            currentRow++;
+        }
+    }
+
+    public void ComputeDependencies()
+    {
+        for (int rowIndex = 0; rowIndex < cardsToPick.Count - 1; rowIndex++)
+        {
+            List<CardScript> row = cardsToPick[rowIndex];
+            for (int columnIndex = 0; columnIndex < row.Count; columnIndex++)
+            {
+                CardScript card = row[columnIndex];
+                int[] dependentIndices = GetDependentsIndex(rowIndex, columnIndex);
+                int nextRowIndex = rowIndex + 1;
+                foreach (int dependentIndicesColumn in dependentIndices)
+                {
+                    card.AddDependency(cardsToPick[nextRowIndex][dependentIndicesColumn]);
+                }
+            }
+        }
+    }
+
+    public void CheckForPossibleCardFlips()
+    {
+        foreach (var row in cardsToPick)
+        {
+            foreach (var card in row)
+            {
+                card.handleFlipIfEligible();
+            }
+        }
+    }
+
+      public List<CardScript> GetFlippedCards()
+    {
+        List<CardScript> flippedCards = new List<CardScript>();
+        foreach (var row in cardsToPick)
+        {
+            foreach (var card in row)
+            {
+                if (card.cardData.IsFaceUp)
+                {
+                    flippedCards.Add(card);
+                }
+            }
+        }
+        return flippedCards;
+    }
+
+
+    private int[] GetDependentsIndex(int currentRowIndex, int currentColumnIndex)
     {
         if (currentRowIndex >= dependents.Length)
         {

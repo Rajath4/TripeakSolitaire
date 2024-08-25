@@ -3512,7 +3512,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 336677c43ec8e41c5ac43ed98088a1dd, type: 2}
   - {fileID: 11400000, guid: 75e7a3405535e4adeb69be4245f9cc46, type: 2}
   - {fileID: 11400000, guid: b744520a69c064a67ab6b4782209e7e9, type: 2}
-  gridCardContainer: {fileID: 7023712578391896718}
+  cardGrid: {fileID: 7023712578391896718}
   wastePile: {fileID: 5344608152857388098}
   deck: {fileID: 7971403792949149619}
 --- !u!1 &1474171866
@@ -5399,7 +5399,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 336677c43ec8e41c5ac43ed98088a1dd, type: 2}
   - {fileID: 11400000, guid: 75e7a3405535e4adeb69be4245f9cc46, type: 2}
   - {fileID: 11400000, guid: b744520a69c064a67ab6b4782209e7e9, type: 2}
-  gridCardContainer: {fileID: 1393728714}
+  cardGrid: {fileID: 0}
   wastePile: {fileID: 0}
   deck: {fileID: 0}
 --- !u!114 &122047742507731129
