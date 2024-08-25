@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class CardManager : MonoBehaviour, IDeckCardClickHandler,IGridCardClickHandler
+public class CardManager : MonoBehaviour, IDeckCardClickHandler, IGridCardClickHandler
 {
     public GameObject cardPrefab;     // Card prefab which includes the CardScript
     public CardData[] allCardData;    // Array of all CardData ScriptableObjects, assigned via the inspector
@@ -34,24 +34,18 @@ public class CardManager : MonoBehaviour, IDeckCardClickHandler,IGridCardClickHa
         cardGrid.CheckForPossibleCardFlips();
         deck.SetupDeckCards(cardDataHandler.GetAllCards(), cardPrefab);
 
-        MoveToDeckCardToWastePile();
+        wastePile.ReceiveCardFromDeck(deck.GetCardAtTop());
 
         cardValidator = new CardValidator();
     }
 
-    private async Task MoveToDeckCardToWastePile()
-    {
-        CardScript card = deck.GetCardAtTop();
-        card.FlipWithAnimation();
-        await wastePile.AddCardToWastePile(card);
-    }
 
     public void HandleDeckCardClick(CardScript card)
     {
         if (deck.HasCards())
         {
             Debug.Log("Card MoveToDeckCardToWastePile");
-            MoveToDeckCardToWastePile();
+            wastePile.ReceiveCardFromDeck(deck.GetCardAtTop());
         }
         else
         {

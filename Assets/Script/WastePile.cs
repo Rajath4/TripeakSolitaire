@@ -24,4 +24,11 @@ public class WastePile : MonoBehaviour
     {
         return topCard;
     }
+
+      public async Task ReceiveCardFromDeck(CardScript card)
+    {
+        card.FlipWithAnimation();
+        await AddCardToWastePile(card);
+    }
+
 }
