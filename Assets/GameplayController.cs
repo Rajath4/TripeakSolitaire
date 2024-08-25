@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class CardManager : MonoBehaviour, IDeckCardClickHandler, IGridCardClickHandler
+public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCardClickHandler
 {
     public GameObject cardPrefab;     // Card prefab which includes the CardScript
     public CardData[] allCardData;    // Array of all CardData ScriptableObjects, assigned via the inspector

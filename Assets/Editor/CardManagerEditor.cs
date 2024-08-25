@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 
-[CustomEditor(typeof(CardManager))]
+[CustomEditor(typeof(GameplayController))]
 public class CardManagerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector(); // Draws the normal inspector
 
-        CardManager manager = (CardManager)target; // Cast the target script to CardManager
+        GameplayController manager = (GameplayController)target; // Cast the target script to CardManager
 
         if (GUILayout.Button("Load All CardData"))
         {
@@ -22,7 +22,7 @@ public class CardManagerEditor : Editor
         }
     }
 
-    private void LoadAllCardData(CardManager manager)
+    private void LoadAllCardData(GameplayController manager)
     {
         // Path where all CardData ScriptableObjects are stored, e.g., "Assets/Resources/CardData"
         string path = "CardsData";
@@ -35,7 +35,7 @@ public class CardManagerEditor : Editor
         EditorUtility.SetDirty(manager);
     }
 
-    private void ValidateCardData(CardManager manager)
+    private void ValidateCardData(GameplayController manager)
     {
         foreach (var card in manager.allCardData)
         {
