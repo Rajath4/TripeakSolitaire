@@ -1,34 +1,36 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class CardDataHandler:ICardDataHandler
+public class CardDataHandler : ICardDataHandler
 {
-    private List<CardData> cards = new List<CardData>();
-
+    private List<CardData> originalCards = new List<CardData>();
+    private List<CardData> cardsInPlay = new List<CardData>();
     public CardDataHandler(CardData[] deckCards)
     {
-        cards.AddRange(deckCards); // Initialize the deck with a predefined array of CardData
+        originalCards.AddRange(deckCards); // Initialize the deck with a predefined array of CardData
+        cardsInPlay = originalCards.Select(card => CloneCard(card)).ToList(); // Clone each card if necessary
     }
 
     public void Shuffle()
     {
-        int n = cards.Count;
+        int n = cardsInPlay.Count;
         while (n > 1)
         {
             n--;
             int k = Random.Range(0, n + 1);
-            CardData value = cards[k];
-            cards[k] = cards[n];
-            cards[n] = value;
+            CardData value = cardsInPlay[k];
+            cardsInPlay[k] = cardsInPlay[n];
+            cardsInPlay[n] = value;
         }
     }
 
     public CardData DrawCard()
     {
-        if (cards.Count > 0)
+        if (cardsInPlay.Count > 0)
         {
-            CardData card = cards[0];
-            cards.RemoveAt(0);
+            CardData card = cardsInPlay[0];
+            cardsInPlay.RemoveAt(0);
             return card;
         }
         return null;
@@ -36,6 +38,38 @@ public class CardDataHandler:ICardDataHandler
 
     public CardData[] GetAllCards()
     {
-        return cards.ToArray();
+        return cardsInPlay.ToArray();
     }
+
+    public CardData[] GetNRandomCards(int n)
+    {
+       //Create n random clone from original and send. make sure its not has duplicate cards
+        List<CardData> randomCards = new List<CardData>();
+        for (int i = 0; i < n; i++)
+        {
+            CardData randomCard = CloneCard(originalCards[Random.Range(0, originalCards.Count)]);
+            if (!randomCards.Contains(randomCard))
+            {
+                randomCards.Add(randomCard);
+            }
+            else
+            {
+                i--;
+            }
+        }
+        return randomCards.ToArray();
+    }
+
+    private CardData CloneCard(CardData original)
+    {
+        CardData clone = ScriptableObject.CreateInstance<CardData>();
+        clone.name = original.name;
+        clone.Rank = original.Rank;
+        clone.Suit = original.Suit;
+        clone.IsFaceUp = original.IsFaceUp;
+        clone.FaceUpSprite = original.FaceUpSprite;
+        clone.FaceDownSprite = original.FaceDownSprite;
+        return clone;
+    }
+
 }

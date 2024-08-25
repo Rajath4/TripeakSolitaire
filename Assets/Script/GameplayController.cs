@@ -67,4 +67,10 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
             Debug.Log("Card cannot be collected");
         }
     }
+
+   public void onExtraDeckCardGranted(){
+        deck.AddExtraCardsFromData(cardDataHandler.GetNRandomCards(NO_OF_EXTRA_DECK_CARDS_GRANTED), cardPrefab);
+    }
+
+    private const int NO_OF_EXTRA_DECK_CARDS_GRANTED = 5;
 }

@@ -26,6 +26,19 @@ public class Deck : MonoBehaviour
         }
     }
 
+    public void AddExtraCardsFromData(CardData[] cardDatas, GameObject cardPrefab)
+    {
+        foreach (CardData cardData in cardDatas)
+        {
+            if (cardData != null)
+            {
+                CardScript cardScript = cardFactory.CreateDeckCard(cardData, cardPrefab, parent);
+                cardScript.onCardClicked.AddListener(clickHandler.HandleDeckCardClick);
+                AddCard(cardScript);
+            }
+        }
+    }
+
     public bool HasCards()
     {
         return deckCards.Count > 0;
@@ -48,5 +61,10 @@ public class Deck : MonoBehaviour
         {
             return null;
         }
+    }
+
+    public int GetDeckCardCount()
+    {
+        return deckCards.Count;
     }
 }
