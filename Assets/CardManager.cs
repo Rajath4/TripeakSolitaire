@@ -15,6 +15,8 @@ public class CardManager : MonoBehaviour
 
     public GridCardContainer gridCardContainer;
     private Deck deck;
+    public List<CardScript> wastePile = new List<CardScript>();
+
 
     void Start()
     {
@@ -23,7 +25,13 @@ public class CardManager : MonoBehaviour
         SetupCards();
         ComputeDependencies();
         CheckForPossibleCardFlips();
+
+       
+
+        SetupDeckCards();
+        MoveToDeckCardToWastePile();
     }
+    
 
     void SetupCards()
     {
@@ -50,6 +58,38 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    private void SetupDeckCards()
+    {
+        int currentIndex = 0;
+        foreach (CardData cardData in allCardData)
+        {
+            CardScript cardScript = GetCardScript(cardData);
+            cardScript.transform.position = deckPosition.position;
+            RegisterDeckCardClickHandler(cardScript); // Register the card for click events
+            deck.AddCardScript(cardScript);
+            currentIndex++;
+        }
+    }
+
+    private void MoveToDeckCardToWastePile(){
+        CardScript cardScript = deck.GetCardScriptAtTop();
+        wastePile.Add(cardScript);
+        cardScript.FlipWithAnimation();
+        Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
+       Transform wastePileTransform = wastePilePosition;
+       wastePileTransform.position = wastePilePositionZOffset;
+        cardScript.MoveToDestination(wastePileTransform);
+    }
+
+    private CardScript GetCardScript(CardData cardData)
+    {
+
+        GameObject cardObj = Instantiate(cardPrefab);
+        CardScript cardScript = cardObj.GetComponent<CardScript>();
+        cardScript.InitializeCard(cardData);
+        return cardScript;
+    }
+
     void ComputeDependencies()
     {
         for (int rowIndex = 0; rowIndex < cardsToPick.Count - 1; rowIndex++)
@@ -68,20 +108,48 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    public void RegisterDeckCardClickHandler(CardScript card)
+    {
+        card.onCardClicked.AddListener(HandleDeckCardClick);
+    }
+
+    private void HandleDeckCardClick(CardScript card)
+    {
+        if (deck.HasCards())
+        {
+           MoveToDeckCardToWastePile();
+        }
+        else
+        {
+            Debug.Log("Card cannot be collected");
+        }
+    }
+
 
     public void RegisterCardClickHandler(CardScript card)
     {
         card.onCardClicked.AddListener(HandleCardClick);
     }
+    
 
     private void HandleCardClick(CardScript card)
     {
-        card.Flip();
-        card.IsCollected = true;
-        Debug.Log($"Card clicked: {card.cardData.name}");
+        if (CanCardBeCollected(card))
+        {
+            card.Flip();
+            card.IsCollected = true;
+            Debug.Log($"Card clicked: {card.cardData.name}");
 
-        card.MoveToDestination(wastePilePosition);
-        CheckForPossibleCardFlips();
+            card.MoveToDestination(wastePilePosition);
+            CheckForPossibleCardFlips();
+            PlayCardToWastePile(card);
+        }
+        else
+        {
+            Debug.Log("Card cannot be collected");
+        }
+
+
     }
 
 
@@ -112,4 +180,19 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    public bool CanCardBeCollected(CardScript card)
+    {
+        if (wastePile.Count == 0) return true; // If the waste pile is empty, any card can be played
+        CardScript topCard = wastePile[wastePile.Count - 1];
+        // Example rule: match by rank or suit
+        return card.cardData.Rank == topCard.cardData.Rank || card.cardData.Suit == topCard.cardData.Suit;
+    }
+
+    public void PlayCardToWastePile(CardScript card)
+    {
+       CardScript topCard = wastePile[wastePile.Count - 1];
+       wastePile.RemoveAt(wastePile.Count - 1); // Remove the top card from the waste pile
+        Destroy(topCard.gameObject);
+        wastePile.Add(card); // Add the card to the waste pile
+    }
 }
