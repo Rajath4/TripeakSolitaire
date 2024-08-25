@@ -86,8 +86,11 @@ public class CardManager : MonoBehaviour
         wastePileTopCard.MoveToDestination(wastePilePosition);
         wastePileTopCard.transform.SetParent(wastePilePosition);
         wastePileTopCard.onCardClicked.RemoveListener(HandleDeckCardClick);
-        
-        Destroy(currentWastePileTopCard.gameObject);
+
+        if (currentWastePileTopCard != null)
+        {
+            Destroy(currentWastePileTopCard.gameObject);
+        }
     }
 
     private CardScript GetCardScript(CardData cardData, Transform parent)
@@ -192,7 +195,7 @@ public class CardManager : MonoBehaviour
 
     public bool CanCardBeCollected(CardScript card)
     {
-    
+
         CardScript topCard = wastePileTopCard;
         Rank cardRank = card.cardData.Rank;
         Rank topCardRank = topCard.cardData.Rank;
@@ -221,8 +224,8 @@ public class CardManager : MonoBehaviour
     }
     public void PlayCardToWastePile(CardScript card)
     {
-       CardScript cardRemovedFromWastePile = wastePileTopCard;
-       wastePileTopCard = card;
+        CardScript cardRemovedFromWastePile = wastePileTopCard;
+        wastePileTopCard = card;
 
         // Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
         // Transform wastePileTransform = wastePilePosition;
