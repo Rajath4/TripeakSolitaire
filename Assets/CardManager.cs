@@ -15,18 +15,23 @@ public class CardManager : MonoBehaviour
 
     public CardGrid gridCardContainer;
     private Deck deck;
-    public List<CardScript> wastePile = new List<CardScript>();
+
+    private CardDataHandler cardDataHandler;
+
+    private CardScript wastePileTopCard;
 
 
     void Start()
     {
-        deck = new Deck(allCardData); // Initialize the deck with all available CardData
-        // DealCards();
+        cardDataHandler = new CardDataHandler(allCardData);
+        cardDataHandler.Shuffle();
+
+        deck = new Deck();
+
         SetupCards();
         ComputeDependencies();
+
         CheckForPossibleCardFlips();
-
-
 
         SetupDeckCards();
         MoveToDeckCardToWastePile();
@@ -39,20 +44,17 @@ public class CardManager : MonoBehaviour
         float zOffset = -0.1f;
         int currentRow = 0;
 
-        foreach ( RowData row in gridCardContainer.rows)
+        foreach (RowData row in gridCardContainer.rows)
         {
             List<CardScript> currentRowCardScripts = new List<CardScript>();
             foreach (Transform pos in row.positions)
             {
-                Vector3 positionWithZOffset = new Vector3(pos.position.x, pos.position.y, pos.position.z + currentRow * zOffset);
-
                 GameObject cardObj = Instantiate(cardPrefab, pos);
                 CardScript cardScript = cardObj.GetComponent<CardScript>();
-                cardScript.InitializeCard(allCardData[currentIndex]);
+                cardScript.InitializeCard(cardDataHandler.DrawCard());
                 RegisterCardClickHandler(cardScript); // Register the card for click events
                 currentRowCardScripts.Add(cardScript);
                 currentIndex++;
-                Debug.Log($"Card {cardScript.cardData.name} created at {positionWithZOffset}");
             }
             cardsToPick.Add(currentRowCardScripts);
             currentRow++;
@@ -62,31 +64,36 @@ public class CardManager : MonoBehaviour
     private void SetupDeckCards()
     {
         int currentIndex = 0;
-        foreach (CardData cardData in allCardData)
+        foreach (CardData cardData in cardDataHandler.GetAllCards())
         {
-            CardScript cardScript = GetCardScript(cardData);
-            cardScript.transform.position = deckPosition.position;
+            CardScript cardScript = GetCardScript(cardData, deckPosition);
             RegisterDeckCardClickHandler(cardScript); // Register the card for click events
             deck.AddCardScript(cardScript);
+            cardScript.IsDeckCard = true;
             currentIndex++;
         }
     }
 
     private void MoveToDeckCardToWastePile()
     {
-        CardScript cardScript = deck.GetCardScriptAtTop();
-        wastePile.Add(cardScript);
-        cardScript.FlipWithAnimation();
-        Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
-        Transform wastePileTransform = wastePilePosition;
-        wastePileTransform.position = wastePilePositionZOffset;
-        cardScript.MoveToDestination(wastePileTransform);
+        CardScript currentWastePileTopCard = wastePileTopCard;
+
+        wastePileTopCard = deck.GetCardScriptAtTop();
+        wastePileTopCard.FlipWithAnimation();
+        // Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
+        // Transform wastePileTransform = wastePilePosition;
+        // wastePileTransform.position = wastePilePositionZOffset;
+        wastePileTopCard.MoveToDestination(wastePilePosition);
+        wastePileTopCard.transform.SetParent(wastePilePosition);
+        wastePileTopCard.onCardClicked.RemoveListener(HandleDeckCardClick);
+        
+        Destroy(currentWastePileTopCard.gameObject);
     }
 
-    private CardScript GetCardScript(CardData cardData)
+    private CardScript GetCardScript(CardData cardData, Transform parent)
     {
 
-        GameObject cardObj = Instantiate(cardPrefab);
+        GameObject cardObj = Instantiate(cardPrefab, parent);
         CardScript cardScript = cardObj.GetComponent<CardScript>();
         cardScript.InitializeCard(cardData);
         return cardScript;
@@ -119,6 +126,7 @@ public class CardManager : MonoBehaviour
     {
         if (deck.HasCards())
         {
+            Debug.Log("Card MoveToDeckCardToWastePile");
             MoveToDeckCardToWastePile();
         }
         else
@@ -142,7 +150,7 @@ public class CardManager : MonoBehaviour
             card.IsCollected = true;
             Debug.Log($"Card clicked: {card.cardData.name}");
 
-            card.MoveToDestination(wastePilePosition);
+            // card.MoveToDestination(wastePilePosition);
             CheckForPossibleCardFlips();
             PlayCardToWastePile(card);
         }
@@ -184,11 +192,8 @@ public class CardManager : MonoBehaviour
 
     public bool CanCardBeCollected(CardScript card)
     {
-        if (wastePile.Count == 0)
-        {
-            Debug.LogError("Waste pile is empty");
-        }
-        CardScript topCard = wastePile[wastePile.Count - 1];
+    
+        CardScript topCard = wastePileTopCard;
         Rank cardRank = card.cardData.Rank;
         Rank topCardRank = topCard.cardData.Rank;
 
@@ -216,9 +221,15 @@ public class CardManager : MonoBehaviour
     }
     public void PlayCardToWastePile(CardScript card)
     {
-        CardScript topCard = wastePile[wastePile.Count - 1];
-        wastePile.RemoveAt(wastePile.Count - 1); // Remove the top card from the waste pile
-        Destroy(topCard.gameObject);
-        wastePile.Add(card); // Add the card to the waste pile
+       CardScript cardRemovedFromWastePile = wastePileTopCard;
+       wastePileTopCard = card;
+
+        // Vector3 wastePilePositionZOffset = new Vector3(wastePilePosition.position.x, wastePilePosition.position.y, wastePilePosition.position.z - wastePile.Count * 0.1f);
+        // Transform wastePileTransform = wastePilePosition;
+        // wastePileTransform.position = wastePilePosition;
+        card.MoveToDestination(wastePilePosition);
+        card.transform.SetParent(wastePilePosition);
+
+        Destroy(cardRemovedFromWastePile.gameObject);
     }
 }
