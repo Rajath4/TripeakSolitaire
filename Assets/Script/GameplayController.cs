@@ -82,6 +82,7 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         }
         else
         {
+            card.ShakeCard();
             Debug.Log("Card cannot be collected");
         }
     }

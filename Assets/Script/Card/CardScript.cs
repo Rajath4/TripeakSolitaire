@@ -99,4 +99,9 @@ public class CardScript : MonoBehaviour, IPointerDownHandler
     {
         await transform.DOMove(destination.position, duration).SetEase(Ease.InOutQuad).AsyncWaitForCompletion();
     }
+
+    public void ShakeCard()
+    {
+        transform.DOShakePosition(0.5f, strength: new Vector3(10f, 0f, 0f), vibrato: 10, randomness: 90, snapping: false, fadeOut: true);
+    }
 }
