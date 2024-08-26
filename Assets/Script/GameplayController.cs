@@ -5,13 +5,9 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
 {
     [@SerializeField] private GameObject cardPrefab;
     public CardData[] allCardData;    //Use auto fill button
-
     [@SerializeField] private CardGrid cardGrid;
-
     [@SerializeField] private WastePile wastePile;
-
     [@SerializeField] private Deck deck;
-
     [@SerializeField] private GameUI gameUI;
 
     private CardDataHandler cardDataHandler;

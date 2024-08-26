@@ -16,12 +16,10 @@ public class CardDataCreator : Editor
         {
             foreach (string rank in ranks)
             {
-                                string cardName = $"{suit.ToLower()}_of_{rank.ToLower()}";
-                // string cardName = $"{rank.ToLower()}_of_{suit.ToLower()}";
-                // Debug.Log($"Creating card data for {cardName}");
+                string cardName = $"{suit.ToLower()}_of_{rank.ToLower()}";
                 string spritePath = $"Assets/Sprites/Cards/{cardName}.png";
                 Sprite cardFrontSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePath);
-                if(cardFrontSprite == null)
+                if (cardFrontSprite == null)
                 {
                     Debug.LogError($"Sprite not found at path: {spritePath}");
                 }
