@@ -4,73 +4,25 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
-    [@SerializeField]
-    private TMP_Text scoreText;
+    [@SerializeField] private Button buyDeckButton;
 
-    [@SerializeField]
-    private TMP_Text highScoreText;
+    [@SerializeField] private GameTimer gameTimer;
 
-    [@SerializeField]
-    private Button buyDeckButton;
+    [@SerializeField] private GameObject leaderboardPopupPrefab;
 
-    [@SerializeField]
-    private GameTimer gameTimer;
+    [@SerializeField] private GameObject gameOverPopupPrefab;
 
-    [@SerializeField]
-    private GameObject leaderboardPopupPrefab;
+    [@SerializeField] private Transform popupParent;
 
-    [@SerializeField]
-    private GameObject gameOverPopupPrefab;
+    [@SerializeField] private Button hintButton;
 
-    [@SerializeField]
-    private Transform popupParent;
-
-    [@SerializeField]
-    public Button hintButton;
-
-    private GamePlayScoringSystem scoringSystem;  // Reference to the ScoringSystem
-
+    [@SerializeField] private ScoreUI scoreUI;
 
     public void Initialize(GamePlayScoringSystem scoringSystem)
     {
-        this.scoringSystem = scoringSystem;
 
-        // Subscribe to score changes
-        scoringSystem.OnScoreChanged += UpdateScoreDisplay;
-
-        InitScoreDisplay();
-
+        scoreUI.Initialize(scoringSystem);
         gameTimer.StartTimer();
-    }
-
-    private void OnDestroy()
-    {
-        if (scoringSystem == null) return;
-        // Unsubscribe to prevent memory leaks
-        scoringSystem.OnScoreChanged -= UpdateScoreDisplay;
-    }
-
-    private void UpdateScoreDisplay(int newScore)
-    {
-        scoreText.text = $"Score: {newScore}";
-        UpdateHighScore(newScore);
-    }
-
-    private void UpdateHighScore(int newScore)
-    {
-        int highScore = PlayerPrefs.GetInt("HighScore", 0);
-        if (newScore > highScore)
-        {
-            PlayerPrefs.SetInt("HighScore", newScore);
-            PlayerPrefs.Save();
-            highScoreText.text = $"High Score: {newScore}";
-        }
-    }
-
-    private void InitScoreDisplay()
-    {
-        scoreText.text = "Score: 0";
-        highScoreText.text = $"High Score: {PlayerPrefs.GetInt("HighScore", 0)}";
     }
 
     public void HandleBuyDeckBtnVisibility(int deckCardCount)

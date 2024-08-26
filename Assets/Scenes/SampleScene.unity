@@ -399,6 +399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 240761377}
   - component: {fileID: 240761378}
+  - component: {fileID: 240761379}
   m_Layer: 5
   m_Name: GameUI
   m_TagString: Untagged
@@ -443,14 +444,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f747878041d40f2b84fa6476d25007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 96697885}
-  highScoreText: {fileID: 1269387688}
   buyDeckButton: {fileID: 1838379728}
   gameTimer: {fileID: 1363796612}
   leaderboardPopupPrefab: {fileID: 5630199599950600431, guid: 2c3366f31f38e45a797f6f5a619da2a8, type: 3}
   gameOverPopupPrefab: {fileID: 5630199599950600431, guid: 3711334d3443a4344984356992bfca7c, type: 3}
   popupParent: {fileID: 961841874}
   hintButton: {fileID: 896543875}
+  scoreUI: {fileID: 240761379}
+--- !u!114 &240761379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240761376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ff28b5b3e204fba9ea0494bf109499, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 96697885}
+  highScoreText: {fileID: 1269387688}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
