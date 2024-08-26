@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -20,10 +22,16 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
     public GameUI gameUI;
 
     private GamePlayScoringSystem scoringSystem;
+
+        private HintManager hintManager;
+
     void Start()
     {
         InitGamePlay();
         InitGameUI();
+
+        Debug.Log("This message should appear in the console when the game starts");
+
     }
 
     private void InitGamePlay()
@@ -42,10 +50,11 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         cardGrid.CheckForPossibleCardFlips();
         deck.SetupDeckCards(cardDataHandler.GetAllCards(), cardPrefab);
 
-        wastePile.ReceiveCardFromDeck(deck.GetCardAtTop());
+        wastePile.ReceiveCardFromDeck(deck.PopTopCard());
 
         cardValidator = new CardValidator();
         scoringSystem = new GamePlayScoringSystem();
+        hintManager = new HintManager(cardValidator, cardGrid, deck, wastePile);
     }
 
     private void InitGameUI()
@@ -60,7 +69,7 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         if (deck.HasCards())
         {
             Debug.Log("Card MoveToDeckCardToWastePile");
-            wastePile.ReceiveCardFromDeck(deck.GetCardAtTop());
+            wastePile.ReceiveCardFromDeck(deck.PopTopCard());
             scoringSystem.ResetSequence();
             gameUI.HandleBuyDeckBtnVisibility(deck.GetDeckCardCount());
         }
@@ -91,6 +100,12 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
     {
         deck.AddExtraCardsFromData(cardDataHandler.GetNRandomCards(NO_OF_EXTRA_DECK_CARDS_GRANTED), cardPrefab);
         gameUI.HandleBuyDeckBtnVisibility(deck.GetDeckCardCount());
+    }
+
+
+    public void OnHintGranted()
+    {
+       hintManager.RevealHint();
     }
 
     private const int NO_OF_EXTRA_DECK_CARDS_GRANTED = 5;

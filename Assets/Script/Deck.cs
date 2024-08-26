@@ -54,6 +54,29 @@ public class Deck : MonoBehaviour
         if (deckCards.Count > 0)
         {
             CardScript cardScript = deckCards[deckCards.Count - 1];
+            return cardScript;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void ShakeTopCard()
+    {
+        CardScript cardScript = GetCardAtTop();
+        Debug.Log("Top card: "+cardScript.cardData.name);
+        if (cardScript != null)
+        {
+            cardScript.ShakeCard();
+        }
+    }
+
+    public CardScript PopTopCard()
+    {
+        if (deckCards.Count > 0)
+        {
+            CardScript cardScript = deckCards[deckCards.Count - 1];
             deckCards.RemoveAt(deckCards.Count - 1);
             return cardScript;
         }
