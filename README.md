@@ -57,7 +57,9 @@ In this project, several design patterns are employed to ensure a clean, maintai
 - **Usage**: The Observer pattern is implemented via events to handle score updates and game state notifications across various UI components. The `GamePlayScoringSystem` uses events to notify the `GameUI` when changes occur.
 - **Benefits**: This pattern allows for a low-coupling between the state of the game and the components that display this state (like the UI). UI components subscribe to these events and update themselves accordingly when the game state changes, promoting a reactive architecture.
 
-### Component Descriptions
+
+
+## Module Descriptions
 
 #### Card Data Handler
 **Purpose**: Manages the card data.
