@@ -4,11 +4,10 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
-    [@SerializeField] private Button buyDeckButton;
     [@SerializeField] private GameTimer gameTimer;
     [@SerializeField] private PopupHandler popupHandler;
-    [@SerializeField] private Button hintButton;
     [@SerializeField] private ScoreUI scoreUI;
+    [@SerializeField] private GameplayCTAHolder gameplayCTAHolder;
 
     public void Initialize(GamePlayScoringSystem scoringSystem)
     {
@@ -18,7 +17,7 @@ public class GameUI : MonoBehaviour
 
     public void HandleBuyDeckBtnVisibility(int deckCardCount)
     {
-        buyDeckButton.gameObject.SetActive(deckCardCount <= 0);
+        gameplayCTAHolder.HandleBuyDeckBtnVisibility(deckCardCount);
     }
 
     public void OnLeaderboardButtonClicked()
@@ -34,11 +33,11 @@ public class GameUI : MonoBehaviour
 
     public void OnGameplayInteractionBlocked()
     {
-        hintButton.gameObject.SetActive(false);
+        gameplayCTAHolder.OnGameplayInteractionBlocked();
     }
 
     public void OnGameplayInteractionResumed()
     {
-        hintButton.gameObject.SetActive(true);
+        gameplayCTAHolder.OnGameplayInteractionResumed();
     }
 }
