@@ -6,7 +6,6 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
     public GameObject cardPrefab;     // Card prefab which includes the CardScript
     public CardData[] allCardData;    // Array of all CardData ScriptableObjects, assigned via the inspector
 
-
     public CardGrid cardGrid;
 
     private CardDataHandler cardDataHandler;
@@ -18,6 +17,9 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
 
     private CardValidator cardValidator;
 
+    public GameUI gameUI;
+
+    private GamePlayScoringSystem scoringSystem;
     void Start()
     {
         cardDataHandler = new CardDataHandler(allCardData);
@@ -37,6 +39,9 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         wastePile.ReceiveCardFromDeck(deck.GetCardAtTop());
 
         cardValidator = new CardValidator();
+        scoringSystem = new GamePlayScoringSystem();
+
+        gameUI.Initialize(scoringSystem);
     }
 
 
@@ -46,6 +51,7 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         {
             Debug.Log("Card MoveToDeckCardToWastePile");
             wastePile.ReceiveCardFromDeck(deck.GetCardAtTop());
+            scoringSystem.ResetSequence();
         }
         else
         {
@@ -60,6 +66,7 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
             card.IsCollected = true;
             Debug.Log($"Card clicked: {card.cardData.name}");
             await wastePile.AddCardToWastePile(card);
+            scoringSystem.AddCardToSequence(card.cardData.Rank);
             cardGrid.CheckForPossibleCardFlips();
         }
         else
@@ -68,7 +75,8 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         }
     }
 
-   public void onExtraDeckCardGranted(){
+    public void onExtraDeckCardGranted()
+    {
         deck.AddExtraCardsFromData(cardDataHandler.GetNRandomCards(NO_OF_EXTRA_DECK_CARDS_GRANTED), cardPrefab);
     }
 

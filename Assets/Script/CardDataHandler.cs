@@ -4,8 +4,8 @@ using System.Linq;
 
 public class CardDataHandler : ICardDataHandler
 {
-    private List<CardData> originalCards = new List<CardData>();
-    private List<CardData> cardsInPlay = new List<CardData>();
+    private readonly List<CardData> originalCards = new List<CardData>();
+    private readonly List<CardData> cardsInPlay = new List<CardData>();
     public CardDataHandler(CardData[] deckCards)
     {
         originalCards.AddRange(deckCards); // Initialize the deck with a predefined array of CardData
