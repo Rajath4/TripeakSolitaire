@@ -3,8 +3,8 @@ public class CardValidator
     public bool IsValidCardCollection(CardScript wastePileCard, CardScript cardToCollect)
     {
 
-        Rank collectedCardRank = cardToCollect.cardData.Rank;
-        Rank wastePileCardRank = wastePileCard.cardData.Rank;
+        Rank collectedCardRank = cardToCollect.GetRank();
+        Rank wastePileCardRank = wastePileCard.GetRank();
 
         if (collectedCardRank == Rank.Ace)
         {

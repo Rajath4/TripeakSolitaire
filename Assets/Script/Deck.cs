@@ -66,7 +66,6 @@ public class Deck : MonoBehaviour
     public void ShakeTopCard()
     {
         CardScript cardScript = GetCardAtTop();
-        Debug.Log("Top card: " + cardScript.cardData.name);
         if (cardScript != null)
         {
             cardScript.ShakeCard();

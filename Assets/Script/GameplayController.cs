@@ -89,7 +89,7 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
             SetReadyForPlayerInput(false);
             card.IsCollected = true;
             await wastePile.AddCardToWastePile(card);
-            scoringSystem.AddCardToSequence(card.cardData.Rank);
+            scoringSystem.AddCardToSequence(card.GetRank());
             await cardGrid.CheckForPossibleCardFlips();
             SetReadyForPlayerInput(true);
             CheckForGameOver();

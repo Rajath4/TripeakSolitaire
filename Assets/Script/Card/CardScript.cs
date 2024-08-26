@@ -10,13 +10,12 @@ public class CardClickEvent : UnityEvent<CardScript> { }
 
 public class CardScript : MonoBehaviour, IPointerDownHandler
 {
-    [SerializeField] private Image spriteRenderer; // To render the card sprite
-
-    public CardData cardData; // Reference to the CardData scriptable object
+    [SerializeField] private Image spriteRenderer;
     public CardClickEvent onCardClicked = new CardClickEvent();
     public bool IsCollected { get; set; } = false;
     public bool IsDeckCard { get; set; } = false;
 
+    private CardData cardData; // Reference to the CardData scriptable object
     private List<CardScript> dependsOnCards = new List<CardScript>();  // Cards on which current card depends on to be flipped.
 
     public void InitializeCard(CardData data)
@@ -82,7 +81,6 @@ public class CardScript : MonoBehaviour, IPointerDownHandler
             Debug.LogWarning("Card is not face up or is a deck card, cannot interact.");
             return;
         }
-        Debug.Log("Card clicked: " + cardData.name);
         onCardClicked.Invoke(this);
     }
 
@@ -107,5 +105,15 @@ public class CardScript : MonoBehaviour, IPointerDownHandler
     public void ShakeCard()
     {
         transform.DOShakePosition(0.5f, strength: new Vector3(10f, 0f, 0f), vibrato: 10, randomness: 90, snapping: false, fadeOut: true);
+    }
+
+    public Rank GetRank()
+    {
+        return cardData.Rank;
+    }
+
+    public bool IsFaceUp()
+    {
+        return cardData.IsFaceUp;
     }
 }

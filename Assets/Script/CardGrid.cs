@@ -93,7 +93,7 @@ public class CardGrid : MonoBehaviour
         {
             foreach (var card in row)
             {
-                if (card.cardData.IsFaceUp && !card.IsCollected)
+                if (card.IsFaceUp() && !card.IsCollected)
                 {
                     flippedCards.Add(card);
                 }
