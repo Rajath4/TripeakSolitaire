@@ -24,7 +24,7 @@ The game starts with cards arranged in three pyramids, overlaid with ten face-up
 
 ## Project Structure
 
-### Key Directories and Files
+#### Key Directories and Files
 - **Scripts**: Contains all C# scripts, organized by functionality:
   - **Card**: Manages card behaviors.
   - **UI**: Manages user interface components.
@@ -32,7 +32,7 @@ The game starts with cards arranged in three pyramids, overlaid with ten face-up
 - **Prefabs**: Includes reusable game object templates.
 - **Scenes**: Contains Unity scene files for the game setup.
 
-### Architecture and Components
+## Architecture
 - **MVC Pattern**: Used to separate concerns across the Model (game logic), View (UI components), and Controller (gameplay control).
 - **Component Pattern**: Utilized extensively to build game objects with modular and interchangeable components.
 
