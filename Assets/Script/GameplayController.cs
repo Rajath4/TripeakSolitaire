@@ -41,7 +41,13 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         cardValidator = new CardValidator();
         scoringSystem = new GamePlayScoringSystem();
 
+        InitGameUI();
+    }
+
+    private void InitGameUI()
+    {
         gameUI.Initialize(scoringSystem);
+        gameUI.HandleBuyDeckBtnVisibility(deck.GetDeckCardCount());
     }
 
 
@@ -52,6 +58,7 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
             Debug.Log("Card MoveToDeckCardToWastePile");
             wastePile.ReceiveCardFromDeck(deck.GetCardAtTop());
             scoringSystem.ResetSequence();
+            gameUI.HandleBuyDeckBtnVisibility(deck.GetDeckCardCount());
         }
         else
         {
@@ -75,9 +82,10 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         }
     }
 
-    public void onExtraDeckCardGranted()
+    public void OnExtraDeckCardGranted()
     {
         deck.AddExtraCardsFromData(cardDataHandler.GetNRandomCards(NO_OF_EXTRA_DECK_CARDS_GRANTED), cardPrefab);
+        gameUI.HandleBuyDeckBtnVisibility(deck.GetDeckCardCount());
     }
 
     private const int NO_OF_EXTRA_DECK_CARDS_GRANTED = 5;

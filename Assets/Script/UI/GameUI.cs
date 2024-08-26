@@ -7,6 +7,8 @@ public class GameUI : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text highScoreText;
 
+    public Button buyDeckButton;
+
     private GamePlayScoringSystem scoringSystem;  // Reference to the ScoringSystem
 
 
@@ -49,5 +51,9 @@ public class GameUI : MonoBehaviour
     {
         scoreText.text = "Score: 0";
         highScoreText.text = $"High Score: {PlayerPrefs.GetInt("HighScore", 0)}";
+    }
+
+    public void HandleBuyDeckBtnVisibility(int deckCardCount){
+        buyDeckButton.gameObject.SetActive(deckCardCount <= 0);
     }
 }
