@@ -5,22 +5,13 @@ using UnityEngine.UI;
 public class GameUI : MonoBehaviour
 {
     [@SerializeField] private Button buyDeckButton;
-
     [@SerializeField] private GameTimer gameTimer;
-
-    [@SerializeField] private GameObject leaderboardPopupPrefab;
-
-    [@SerializeField] private GameObject gameOverPopupPrefab;
-
-    [@SerializeField] private Transform popupParent;
-
+    [@SerializeField] private PopupHandler popupHandler;
     [@SerializeField] private Button hintButton;
-
     [@SerializeField] private ScoreUI scoreUI;
 
     public void Initialize(GamePlayScoringSystem scoringSystem)
     {
-
         scoreUI.Initialize(scoringSystem);
         gameTimer.StartTimer();
     }
@@ -32,16 +23,13 @@ public class GameUI : MonoBehaviour
 
     public void OnLeaderboardButtonClicked()
     {
-        LeaderboardFullScreenPopup leaderboardPopup = LeaderboardFullScreenPopup.CreateInstance(leaderboardPopupPrefab, popupParent);
-        leaderboardPopup.Show();
+        popupHandler.ShowLeaderboardPopup();
     }
 
     public void OnGameOver()
     {
         gameTimer.StopTimer();
-
-        GameOverFullScreenPopup gameOverPopup = GameOverFullScreenPopup.CreateInstance(gameOverPopupPrefab, popupParent);
-        gameOverPopup.Show();
+        popupHandler.ShowGameOverPopup();
     }
 
     public void OnGameplayInteractionBlocked()

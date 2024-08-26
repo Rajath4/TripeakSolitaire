@@ -446,9 +446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buyDeckButton: {fileID: 1838379728}
   gameTimer: {fileID: 1363796612}
-  leaderboardPopupPrefab: {fileID: 5630199599950600431, guid: 2c3366f31f38e45a797f6f5a619da2a8, type: 3}
-  gameOverPopupPrefab: {fileID: 5630199599950600431, guid: 3711334d3443a4344984356992bfca7c, type: 3}
-  popupParent: {fileID: 961841874}
+  popupHandler: {fileID: 961841875}
   hintButton: {fileID: 896543875}
   scoreUI: {fileID: 240761379}
 --- !u!114 &240761379
@@ -967,6 +965,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 961841874}
+  - component: {fileID: 961841875}
   m_Layer: 5
   m_Name: GamePopups
   m_TagString: Untagged
@@ -993,6 +992,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &961841875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961841873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 079b5f84af7ef4301a0927c9ccba70f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leaderboardPopupPrefab: {fileID: 5630199599950600431, guid: 2c3366f31f38e45a797f6f5a619da2a8, type: 3}
+  gameOverPopupPrefab: {fileID: 5630199599950600431, guid: 3711334d3443a4344984356992bfca7c, type: 3}
+  popupParent: {fileID: 961841874}
 --- !u!1 &1269387686
 GameObject:
   m_ObjectHideFlags: 0
