@@ -9,6 +9,8 @@ public class GameUI : MonoBehaviour
 
     public Button buyDeckButton;
 
+    public GameTimer gameTimer; 
+
     private GamePlayScoringSystem scoringSystem;  // Reference to the ScoringSystem
 
 
@@ -20,6 +22,8 @@ public class GameUI : MonoBehaviour
         scoringSystem.OnScoreChanged += UpdateScoreDisplay;
 
         InitScoreDisplay();
+
+        gameTimer.StartTimer();
     }
 
     private void OnDestroy()
