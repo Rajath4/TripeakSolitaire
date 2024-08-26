@@ -62,3 +62,5 @@ ehthumbs.db
 # Crashlytics     #
 # ================ #
 crashlytics-build.properties
+
+Build.app/
