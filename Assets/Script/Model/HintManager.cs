@@ -16,19 +16,16 @@ public class HintManager
         this.wastePile = wastePile;
     }
 
-    // Entry point for revealing hints
     public void RevealHint()
     {
-        Debug.Log("RevealHint called");
-
         var eligibleCards = GetEligibleCards();
+
         if (eligibleCards.Count > 0)
         {
-            Debug.Log("Shaking eligible cards");
             ShakeCards(eligibleCards);
-        }else if (deck.HasCards())
+        }
+        else if (deck.HasCards())
         {
-            Debug.Log("Shaking top card of the deck");
             deck.ShakeTopCard();
         }
         else
@@ -56,7 +53,7 @@ public class HintManager
     {
         foreach (var card in cards)
         {
-            if (card != null) // Check if the card object is not null
+            if (card != null) 
             {
                 card.ShakeCard();
             }

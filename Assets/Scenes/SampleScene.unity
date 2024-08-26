@@ -449,6 +449,7 @@ MonoBehaviour:
   gameTimer: {fileID: 1363796612}
   leaderboardPopupPrefab: {fileID: 5630199599950600431, guid: 2c3366f31f38e45a797f6f5a619da2a8, type: 3}
   popupParent: {fileID: 961841874}
+  hintButton: {fileID: 896543875}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &896543874
 RectTransform:
   m_ObjectHideFlags: 0

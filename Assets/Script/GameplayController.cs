@@ -23,15 +23,20 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
 
     private GamePlayScoringSystem scoringSystem;
 
-        private HintManager hintManager;
+    private HintManager hintManager;
 
     void Start()
+    {
+        Initialize();
+    }
+
+    private async void Initialize()
     {
         InitGamePlay();
         InitGameUI();
 
-        Debug.Log("This message should appear in the console when the game starts");
-
+        await wastePile.ReceiveCardFromDeck(deck.PopTopCard());
+        SetReadyForPlayerInput(true);
     }
 
     private void InitGamePlay()
@@ -50,7 +55,6 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         cardGrid.CheckForPossibleCardFlips();
         deck.SetupDeckCards(cardDataHandler.GetAllCards(), cardPrefab);
 
-        wastePile.ReceiveCardFromDeck(deck.PopTopCard());
 
         cardValidator = new CardValidator();
         scoringSystem = new GamePlayScoringSystem();
@@ -64,14 +68,16 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
     }
 
 
-    public void HandleDeckCardClick(CardScript card)
+    public async void HandleDeckCardClick(CardScript card)
     {
+        if (IsUserGamePlayInteractionsBlocked) return;
         if (deck.HasCards())
         {
-            Debug.Log("Card MoveToDeckCardToWastePile");
-            wastePile.ReceiveCardFromDeck(deck.PopTopCard());
+            SetReadyForPlayerInput(false);
+            await wastePile.ReceiveCardFromDeck(deck.PopTopCard());
             scoringSystem.ResetSequence();
             gameUI.HandleBuyDeckBtnVisibility(deck.GetDeckCardCount());
+            SetReadyForPlayerInput(true);
         }
         else
         {
@@ -81,13 +87,16 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
 
     public async void HandleGridCardClick(CardScript card)
     {
+        if (IsUserGamePlayInteractionsBlocked) return;
         if (cardValidator.IsValidCardCollection(wastePile.GetTopCard(), card))
         {
+            card.onCardClicked.RemoveAllListeners();
+            SetReadyForPlayerInput(false);
             card.IsCollected = true;
-            Debug.Log($"Card clicked: {card.cardData.name}");
             await wastePile.AddCardToWastePile(card);
             scoringSystem.AddCardToSequence(card.cardData.Rank);
             cardGrid.CheckForPossibleCardFlips();
+            SetReadyForPlayerInput(true);
         }
         else
         {
@@ -105,8 +114,24 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
 
     public void OnHintGranted()
     {
-       hintManager.RevealHint();
+        hintManager.RevealHint();
     }
 
+
+    private void SetReadyForPlayerInput(bool IsReady)
+    {
+        IsUserGamePlayInteractionsBlocked = !IsReady;
+
+        if (IsReady)
+        {
+            gameUI.OnGameplayInteractionResumed();
+        }
+        else
+        {
+            gameUI.OnGameplayInteractionBlocked();
+        }
+    }
+
+    private bool IsUserGamePlayInteractionsBlocked = true;
     private const int NO_OF_EXTRA_DECK_CARDS_GRANTED = 5;
 }

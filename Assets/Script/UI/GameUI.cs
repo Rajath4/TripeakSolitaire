@@ -15,6 +15,7 @@ public class GameUI : MonoBehaviour
 
     public Transform popupParent; 
 
+    public Button hintButton;
 
     private GamePlayScoringSystem scoringSystem;  // Reference to the ScoringSystem
 
@@ -72,5 +73,15 @@ public class GameUI : MonoBehaviour
     {
         LeaderboardFullScreenPopup leaderboardPopup = LeaderboardFullScreenPopup.CreateInstance(leaderboardPopupPrefab,popupParent);
         leaderboardPopup.Show();
+    }
+
+    public void OnGameplayInteractionBlocked()
+    {
+        hintButton.gameObject.SetActive(false);
+    }
+    
+    public void OnGameplayInteractionResumed()
+    {
+        hintButton.gameObject.SetActive(true);
     }
 }
