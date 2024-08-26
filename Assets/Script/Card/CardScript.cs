@@ -33,15 +33,19 @@ public class CardScript : MonoBehaviour, IPointerDownHandler
         UpdateCardVisual();
     }
 
-    public void handleFlipIfEligible()
+    public async Task handleFlipIfEligible()
     {
         if (CanFlip())
         {
-            FlipWithAnimation();
+            await FlipWithAnimation();
+        }
+        else
+        {
+            await Task.CompletedTask; // Returns immediately, no animation needed
         }
     }
 
-    public async void FlipWithAnimation(float flipDuration = 0.5f)
+    public async Task FlipWithAnimation(float flipDuration = 0.5f)
     {
         spriteRenderer.raycastTarget = false;
 

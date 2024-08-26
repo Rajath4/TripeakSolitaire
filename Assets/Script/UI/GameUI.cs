@@ -11,7 +11,10 @@ public class GameUI : MonoBehaviour
 
     public GameTimer gameTimer;
 
-    public GameObject leaderboardPopupPrefab; // Assign this in the inspector
+    public GameObject leaderboardPopupPrefab;
+
+        public GameObject gameOverPopupPrefab; 
+
 
     public Transform popupParent; 
 
@@ -73,6 +76,14 @@ public class GameUI : MonoBehaviour
     {
         LeaderboardFullScreenPopup leaderboardPopup = LeaderboardFullScreenPopup.CreateInstance(leaderboardPopupPrefab,popupParent);
         leaderboardPopup.Show();
+    }
+
+    public void OnGameOver()
+    {
+        gameTimer.StopTimer();
+
+        GameOverFullScreenPopup gameOverPopup = GameOverFullScreenPopup.CreateInstance(gameOverPopupPrefab,popupParent);
+        gameOverPopup.Show();
     }
 
     public void OnGameplayInteractionBlocked()

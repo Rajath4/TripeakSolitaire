@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity;
 using UnityEngine;
 
@@ -70,18 +71,24 @@ public class CardGrid : MonoBehaviour
         }
     }
 
-    public void CheckForPossibleCardFlips()
+    public async Task CheckForPossibleCardFlips()
     {
+        List<Task> flipTasks = new List<Task>();
+
         foreach (var row in cardsToPick)
         {
             foreach (var card in row)
             {
-                card.handleFlipIfEligible();
+                // Start all eligible flips and collect the tasks
+                flipTasks.Add(card.handleFlipIfEligible());
             }
         }
+
+        // Wait for all flip animations to complete
+        await Task.WhenAll(flipTasks);
     }
 
-      public List<CardScript> GetFlippedCards()
+    public List<CardScript> GetFlippedCards()
     {
         List<CardScript> flippedCards = new List<CardScript>();
         foreach (var row in cardsToPick)

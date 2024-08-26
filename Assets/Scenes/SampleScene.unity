@@ -448,6 +448,7 @@ MonoBehaviour:
   buyDeckButton: {fileID: 1838379728}
   gameTimer: {fileID: 1363796612}
   leaderboardPopupPrefab: {fileID: 5630199599950600431, guid: 2c3366f31f38e45a797f6f5a619da2a8, type: 3}
+  gameOverPopupPrefab: {fileID: 5630199599950600431, guid: 3711334d3443a4344984356992bfca7c, type: 3}
   popupParent: {fileID: 961841874}
   hintButton: {fileID: 896543875}
 --- !u!1 &519420028

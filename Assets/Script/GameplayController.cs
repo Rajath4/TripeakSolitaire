@@ -95,8 +95,9 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
             card.IsCollected = true;
             await wastePile.AddCardToWastePile(card);
             scoringSystem.AddCardToSequence(card.cardData.Rank);
-            cardGrid.CheckForPossibleCardFlips();
+            await cardGrid.CheckForPossibleCardFlips();
             SetReadyForPlayerInput(true);
+            CheckForGameOver();
         }
         else
         {
@@ -129,6 +130,15 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
         else
         {
             gameUI.OnGameplayInteractionBlocked();
+        }
+    }
+
+    private void CheckForGameOver()
+    {
+        if (cardGrid.GetFlippedCards().Count == 0)
+        {
+            SetReadyForPlayerInput(false);
+            gameUI.OnGameOver();
         }
     }
 
