@@ -9,7 +9,12 @@ public class GameUI : MonoBehaviour
 
     public Button buyDeckButton;
 
-    public GameTimer gameTimer; 
+    public GameTimer gameTimer;
+
+    public GameObject leaderboardPopupPrefab; // Assign this in the inspector
+
+    public Transform popupParent; 
+
 
     private GamePlayScoringSystem scoringSystem;  // Reference to the ScoringSystem
 
@@ -18,7 +23,7 @@ public class GameUI : MonoBehaviour
     {
         this.scoringSystem = scoringSystem;
 
-         // Subscribe to score changes
+        // Subscribe to score changes
         scoringSystem.OnScoreChanged += UpdateScoreDisplay;
 
         InitScoreDisplay();
@@ -57,7 +62,14 @@ public class GameUI : MonoBehaviour
         highScoreText.text = $"High Score: {PlayerPrefs.GetInt("HighScore", 0)}";
     }
 
-    public void HandleBuyDeckBtnVisibility(int deckCardCount){
+    public void HandleBuyDeckBtnVisibility(int deckCardCount)
+    {
         buyDeckButton.gameObject.SetActive(deckCardCount <= 0);
+    }
+
+    public void OnLeaderboardButtonClicked()
+    {
+        LeaderboardFullScreenPopup leaderboardPopup = LeaderboardFullScreenPopup.CreateInstance(leaderboardPopupPrefab,popupParent);
+        leaderboardPopup.Show();
     }
 }
