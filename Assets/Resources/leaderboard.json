@@ -1,0 +1,20 @@
+{
+    "items": [
+        {"id": "1", "name": "Alice", "highScore": 87},
+        {"id": "2", "name": "Bob", "highScore": 243},
+        {"id": "3", "name": "Carol", "highScore": 153},
+        {"id": "4", "name": "David", "highScore": 215},
+        {"id": "5", "name": "Eva", "highScore": 35},
+        {"id": "6", "name": "Frank", "highScore": 199},
+        {"id": "7", "name": "Grace", "highScore": 165},
+        {"id": "8", "name": "Henry", "highScore": 122},
+        {"id": "9", "name": "Isla", "highScore": 289},
+        {"id": "10", "name": "Jack", "highScore": 17},
+        {"id": "11", "name": "Kara", "highScore": 250},
+        {"id": "12", "name": "Liam", "highScore": 74},
+        {"id": "13", "name": "Mona", "highScore": 220},
+        {"id": "14", "name": "Nate", "highScore": 56},
+        {"id": "15", "name": "Olivia", "highScore": 300},
+        {"id": "16", "name": "Pete", "highScore": 142}
+    ]
+}

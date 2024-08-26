@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class LeaderboardFullScreenPopup : MonoBehaviour
 {
+
+    public LeaderboardContent leaderboardContent;
     public static LeaderboardFullScreenPopup CreateInstance(GameObject prefab,Transform parent)
     {
         GameObject instance = Instantiate(prefab,parent);
@@ -11,6 +13,7 @@ public class LeaderboardFullScreenPopup : MonoBehaviour
 
     public void Show()
     {
+        leaderboardContent.Initialize();
         this.gameObject.SetActive(true);
     }
 
