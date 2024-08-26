@@ -59,7 +59,7 @@ In this project, several design patterns are employed to ensure a clean, maintai
 
 
 
-## Module Descriptions
+## Class Descriptions
 
 #### Card Data Handler
 **Purpose**: Manages the card data.
