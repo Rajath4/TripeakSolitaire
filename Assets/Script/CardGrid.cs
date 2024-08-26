@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity;
 using UnityEngine;
 
 public interface ILayoutIndex
@@ -17,14 +16,13 @@ public class CardGrid : MonoBehaviour
         public Transform[] positions; // Positions for each card in this row
     }
 
-    public RowData[] rows; // Data for each row, set this up in the inspector
+    [@SerializeField]
+    private RowData[] rows; // Data for each row, set this up in the inspector
 
     private List<List<CardScript>> cardsToPick = new List<List<CardScript>>();
-
     private IGridCardClickHandler clickHandler;
     private ICardFactory cardFactory;
     private ICardDataHandler cardDataHandler;
-
 
     public void Initialize(ICardDataHandler cardDataHandler, ICardFactory cardFactory, IGridCardClickHandler clickHandler)
     {

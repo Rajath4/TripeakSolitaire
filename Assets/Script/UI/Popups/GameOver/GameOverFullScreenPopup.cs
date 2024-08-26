@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class GameOverFullScreenPopup : MonoBehaviour
 {
-
     public static GameOverFullScreenPopup CreateInstance(GameObject prefab, Transform parent)
     {
         GameObject instance = Instantiate(prefab, parent);

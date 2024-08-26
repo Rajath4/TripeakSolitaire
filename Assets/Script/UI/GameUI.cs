@@ -4,20 +4,28 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
-    public TMP_Text scoreText;
-    public TMP_Text highScoreText;
+    [@SerializeField]
+    private TMP_Text scoreText;
 
-    public Button buyDeckButton;
+    [@SerializeField]
+    private TMP_Text highScoreText;
 
-    public GameTimer gameTimer;
+    [@SerializeField]
+    private Button buyDeckButton;
 
-    public GameObject leaderboardPopupPrefab;
+    [@SerializeField]
+    private GameTimer gameTimer;
 
-        public GameObject gameOverPopupPrefab; 
+    [@SerializeField]
+    private GameObject leaderboardPopupPrefab;
 
+    [@SerializeField]
+    private GameObject gameOverPopupPrefab;
 
-    public Transform popupParent; 
+    [@SerializeField]
+    private Transform popupParent;
 
+    [@SerializeField]
     public Button hintButton;
 
     private GamePlayScoringSystem scoringSystem;  // Reference to the ScoringSystem
@@ -37,19 +45,17 @@ public class GameUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(scoringSystem == null) return;
+        if (scoringSystem == null) return;
         // Unsubscribe to prevent memory leaks
         scoringSystem.OnScoreChanged -= UpdateScoreDisplay;
     }
 
-    // Update the score display whenever the score changes
     private void UpdateScoreDisplay(int newScore)
     {
         scoreText.text = $"Score: {newScore}";
         UpdateHighScore(newScore);
     }
 
-    // Update the high score display
     private void UpdateHighScore(int newScore)
     {
         int highScore = PlayerPrefs.GetInt("HighScore", 0);
@@ -74,7 +80,7 @@ public class GameUI : MonoBehaviour
 
     public void OnLeaderboardButtonClicked()
     {
-        LeaderboardFullScreenPopup leaderboardPopup = LeaderboardFullScreenPopup.CreateInstance(leaderboardPopupPrefab,popupParent);
+        LeaderboardFullScreenPopup leaderboardPopup = LeaderboardFullScreenPopup.CreateInstance(leaderboardPopupPrefab, popupParent);
         leaderboardPopup.Show();
     }
 
@@ -82,7 +88,7 @@ public class GameUI : MonoBehaviour
     {
         gameTimer.StopTimer();
 
-        GameOverFullScreenPopup gameOverPopup = GameOverFullScreenPopup.CreateInstance(gameOverPopupPrefab,popupParent);
+        GameOverFullScreenPopup gameOverPopup = GameOverFullScreenPopup.CreateInstance(gameOverPopupPrefab, popupParent);
         gameOverPopup.Show();
     }
 
@@ -90,7 +96,7 @@ public class GameUI : MonoBehaviour
     {
         hintButton.gameObject.SetActive(false);
     }
-    
+
     public void OnGameplayInteractionResumed()
     {
         hintButton.gameObject.SetActive(true);

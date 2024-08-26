@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    public Transform parent;
+    [@SerializeField]
+    private Transform parent;
 
     private IDeckCardClickHandler clickHandler;
     private ICardFactory cardFactory;
@@ -65,7 +66,7 @@ public class Deck : MonoBehaviour
     public void ShakeTopCard()
     {
         CardScript cardScript = GetCardAtTop();
-        Debug.Log("Top card: "+cardScript.cardData.name);
+        Debug.Log("Top card: " + cardScript.cardData.name);
         if (cardScript != null)
         {
             cardScript.ShakeCard();

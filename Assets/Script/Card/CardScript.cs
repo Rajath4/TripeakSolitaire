@@ -17,7 +17,7 @@ public class CardScript : MonoBehaviour, IPointerDownHandler
     public bool IsCollected { get; set; } = false;
     public bool IsDeckCard { get; set; } = false;
 
-    private List<CardScript> dependsOnCards = new List<CardScript>();  // Cards that dependencies are managed
+    private List<CardScript> dependsOnCards = new List<CardScript>();  // Cards on which current card depends on to be flipped.
 
     public void InitializeCard(CardData data)
     {

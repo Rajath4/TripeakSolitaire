@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class WastePile : MonoBehaviour
 {
-    public Transform WastePilePosition;
+    [@SerializeField]
+    private Transform WastePilePosition;
     private CardScript topCard;
 
 
@@ -25,7 +26,7 @@ public class WastePile : MonoBehaviour
         return topCard;
     }
 
-      public async Task ReceiveCardFromDeck(CardScript card)
+    public async Task ReceiveCardFromDeck(CardScript card)
     {
         card.FlipWithAnimation();
         await AddCardToWastePile(card);

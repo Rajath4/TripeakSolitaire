@@ -3,10 +3,11 @@ using UnityEngine;
 public class LeaderboardFullScreenPopup : MonoBehaviour
 {
 
-    public LeaderboardContent leaderboardContent;
-    public static LeaderboardFullScreenPopup CreateInstance(GameObject prefab,Transform parent)
+    [@SerializeField]
+    private LeaderboardContent leaderboardContent;
+    public static LeaderboardFullScreenPopup CreateInstance(GameObject prefab, Transform parent)
     {
-        GameObject instance = Instantiate(prefab,parent);
+        GameObject instance = Instantiate(prefab, parent);
         instance.SetActive(false); // Start inactive
         return instance.GetComponent<LeaderboardFullScreenPopup>();
     }

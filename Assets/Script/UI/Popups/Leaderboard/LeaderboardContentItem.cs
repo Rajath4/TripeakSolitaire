@@ -1,10 +1,11 @@
 using TMPro;
 using UnityEngine;
 
-public class LeaderboardContentItem:MonoBehaviour{
-    public TMP_Text rankText;
-    public TMP_Text nameText;
-    public TMP_Text highScoreText;
+public class LeaderboardContentItem : MonoBehaviour
+{
+    [@SerializeField] private TMP_Text rankText;
+    [@SerializeField] private TMP_Text nameText;
+    [@SerializeField] private TMP_Text highScoreText;
 
     public void SetData(int rank, string name, int highScore)
     {

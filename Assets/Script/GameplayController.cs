@@ -1,28 +1,23 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using UnityEngine;
 
 public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCardClickHandler
 {
-    public GameObject cardPrefab;     // Card prefab which includes the CardScript
-    public CardData[] allCardData;    // Array of all CardData ScriptableObjects, assigned via the inspector
+    [@SerializeField] private GameObject cardPrefab;
+    public CardData[] allCardData;    //Use auto fill button
 
-    public CardGrid cardGrid;
+    [@SerializeField] private CardGrid cardGrid;
+
+    [@SerializeField] private WastePile wastePile;
+
+    [@SerializeField] private Deck deck;
+
+    [@SerializeField] private GameUI gameUI;
 
     private CardDataHandler cardDataHandler;
-
-    public WastePile wastePile;
-    public Deck deck;
-
     private ICardFactory cardFactory;
-
     private CardValidator cardValidator;
-
-    public GameUI gameUI;
-
     private GamePlayScoringSystem scoringSystem;
-
     private HintManager hintManager;
 
     void Start()

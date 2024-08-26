@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class LeaderboardContent : MonoBehaviour
 {
-    public GameObject entryPrefab;
-    public Transform contentPanel;
+    [@SerializeField] private GameObject entryPrefab;
+    [@SerializeField] private Transform contentPanel;
 
     public void Initialize()
     {
@@ -15,7 +15,6 @@ public class LeaderboardContent : MonoBehaviour
 
     private LeaderboardData FetchLeaderboardData()
     {
-        Debug.Log("Loading leaderboard data");
         TextAsset json = Resources.Load<TextAsset>("leaderboard");
         if (json == null)
         {
@@ -31,7 +30,7 @@ public class LeaderboardContent : MonoBehaviour
 
         // Add the player's high score to the list
         loadedData.items.Add(new LeaderboardEntry { name = "You", highScore = PlayerPrefs.GetInt("HighScore", 0) });
-       
+
         return loadedData;
     }
 
