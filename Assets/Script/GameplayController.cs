@@ -22,6 +22,12 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
     private GamePlayScoringSystem scoringSystem;
     void Start()
     {
+        InitGamePlay();
+        InitGameUI();
+    }
+
+    private void InitGamePlay()
+    {
         cardDataHandler = new CardDataHandler(allCardData);
         cardDataHandler.Shuffle();
 
@@ -40,8 +46,6 @@ public class GameplayController : MonoBehaviour, IDeckCardClickHandler, IGridCar
 
         cardValidator = new CardValidator();
         scoringSystem = new GamePlayScoringSystem();
-
-        InitGameUI();
     }
 
     private void InitGameUI()
