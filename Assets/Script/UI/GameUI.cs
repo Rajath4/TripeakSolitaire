@@ -33,6 +33,7 @@ public class GameUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        if(scoringSystem == null) return;
         // Unsubscribe to prevent memory leaks
         scoringSystem.OnScoreChanged -= UpdateScoreDisplay;
     }
